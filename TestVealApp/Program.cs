@@ -49,13 +49,7 @@ public class Test
     }
     public void RunTestApp()
     {
-        //var fieldinfo = typeof(Task).GetField(nameof(HelloAsync), BindingFlags.Instance | BindingFlags.Public);
-        //delegate Action = fieldinfo.GetValue(Task) as delegate;
-
         var app = new HttpAppServer().Bind("https://localhost:8001").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
         app.Run();
-        //Task.Run(() => Hello());
-        //Task.Run(() => HelloAsync());
-
     }
 }
