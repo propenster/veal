@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Veal", "Veal\Veal.csproj", "{27BC7422-AE78-497B-9464-A122F63226CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestVealApp", "TestVealApp\TestVealApp.csproj", "{7531E832-70A8-4FA4-95EC-C2796F6832F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27BC7422-AE78-497B-9464-A122F63226CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27BC7422-AE78-497B-9464-A122F63226CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27BC7422-AE78-497B-9464-A122F63226CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27BC7422-AE78-497B-9464-A122F63226CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7531E832-70A8-4FA4-95EC-C2796F6832F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7531E832-70A8-4FA4-95EC-C2796F6832F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7531E832-70A8-4FA4-95EC-C2796F6832F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7531E832-70A8-4FA4-95EC-C2796F6832F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2C9F2D8-5ABA-4725-83D0-2FEAE122FC48}
+	EndGlobalSection
+EndGlobal
