@@ -18,7 +18,7 @@ internal class Program
     {
         Console.WriteLine("Hello, World!");
         Console.WriteLine("testing my new Veal App");
-        var app = new HttpAppServer().Bind("http://localhost:8032/").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
+        var app = new HttpAppServer().Bind("http://localhost:4448/").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
         try
         {
             app.Run();

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -16,6 +17,7 @@ namespace Veal
     internal interface IHttpAppServer
     {
         void Run();
+        //void RunTcp();
         HttpAppServer Bind(string prefix);
         HttpAppServer Services(IList<string> services);
     }
@@ -57,16 +59,6 @@ namespace Veal
         public void Run()
         {
             tokenSource = new CancellationTokenSource();
-
-
-            //var listener = new HttpListener();
-            //var listeningTask = Task.Run(() => Listen(listener));
-            //Task.Delay(1000).Wait();
-
-            //Task.Factory.StartNew(HttpServer, token, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-
-
-
             while (true)
             {
                 if (string.IsNullOrWhiteSpace(this.Prefix)) throw new ArgumentNullException(nameof(this.Prefix));
@@ -126,13 +118,7 @@ namespace Veal
                 }, tokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
 
                 Task.Delay(1000).Wait();
-
-
-
             }
-
-
-
         }
 
         public HttpAppServer Services(IList<string> services)
