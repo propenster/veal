@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Veal
@@ -22,6 +25,9 @@ namespace Veal
         public string Prefix { get; set; }
         public HashSet<KeyValuePair<string, MethodInfo>> ActionList { get; set; } = new HashSet<KeyValuePair<string, MethodInfo>>();
 
+        CancellationTokenSource tokenSource;
+
+
         public HttpAppServer Bind(string prefix)
         {
             this.Prefix = prefix.Trim();
@@ -30,51 +36,97 @@ namespace Veal
             return this;
         }
 
+        private static void Listen(HttpListener listener)
+        {
+            var prefixes = new List<String> { "http://localhost:8080/" };
+            prefixes.ForEach(s => listener.Prefixes.Add(s));
+            listener.Start();
+            Console.WriteLine("Listen: before GetContext");
+            try
+            {
+                var ctx = listener.GetContext();
+
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Listen: exception was thrown");
+            }
+            Console.WriteLine("Listen: end of function");
+        }
+
         public void Run()
         {
-            if (string.IsNullOrWhiteSpace(this.Prefix)) throw new ArgumentNullException(nameof(this.Prefix));
-            var listener = new HttpListener();
-            listener.Prefixes.Add(this.Prefix);
-            listener.Start();
+            tokenSource = new CancellationTokenSource();
 
-            Console.WriteLine("Listening on port {0}...", this.Prefix.Split(':').LastOrDefault().Replace("/", string.Empty));
+
+            //var listener = new HttpListener();
+            //var listeningTask = Task.Run(() => Listen(listener));
+            //Task.Delay(1000).Wait();
+
+            //Task.Factory.StartNew(HttpServer, token, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+
+
 
             while (true)
             {
-                HttpListenerContext ctx = listener.GetContext();
-                foreach (var item in ActionList)
+                if (string.IsNullOrWhiteSpace(this.Prefix)) throw new ArgumentNullException(nameof(this.Prefix));
+                var listener = new HttpListener();
+                listener.Prefixes.Add(this.Prefix);
+
+                Task.Factory.StartNew(() =>
                 {
-                    if (ctx.Request.Url.ToString().Contains(item.Key)) continue; //return 404 instead of continue...
-                    Console.WriteLine($"Received request for {ctx.Request.Url}");
-
-                    using (var resp = ctx.Response)
+                    try
                     {
-                        var param = ctx.Request.QueryString;
-                        var type = item.Value.DeclaringType.Assembly.GetType();
-
-                        ParameterInfo[] parameters = item.Value.GetParameters();
-                        object classInstance = Activator.CreateInstance(type);
-
-                        var response = (HttpResponder)item.Value.Invoke(classInstance, parameters);
-
-                        response.ToListenerResponse(resp);
-
-                        byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response.Value)); //of course we want to only do this if requestContentType is application/json or */*
-                        resp.ContentLength64 = buffer.Length;
-
-                        using (Stream ros = resp.OutputStream)
-                        {
-                            ros.Write(buffer, 0, buffer.Length);
-
-                        }
+                        listener.Start();
 
                     }
-                }
+                    catch (HttpListenerException ex)
+                    {
 
-                //Task.Run(() =>
-                //{
+                        throw new PortUnavailableException(ex);
+                    }
+                    Console.WriteLine("Listening on port {0}...", this.Prefix.Split(':').LastOrDefault().Replace("/", string.Empty));
 
-                //});
+
+                    if (!HttpListener.IsSupported)
+                    {
+                        Console.WriteLine("Windows XP SP2 or Server 2003 is required to use the HttpListener class.");
+                        return;
+                    }
+                    HttpListenerContext ctx = listener.GetContext();
+
+                    foreach (var item in ActionList)
+                    {
+                        if (ctx.Request.Url.ToString().Contains(item.Key)) continue; //return 404 instead of continue...
+                        Console.WriteLine($"Received request for {ctx.Request.Url}");
+
+                        using (var resp = ctx.Response)
+                        {
+                            var param = ctx.Request.QueryString;
+                            var type = item.Value.DeclaringType.Assembly.GetType();
+
+                            ParameterInfo[] parameters = item.Value.GetParameters();
+                            object classInstance = Activator.CreateInstance(type);
+
+                            var response = (HttpResponder)item.Value.Invoke(classInstance, parameters);
+
+                            response.ToListenerResponse(resp);
+
+                            byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response.Value)); //of course we want to only do this if requestContentType is application/json or */*
+                            resp.ContentLength64 = buffer.Length;
+
+                            using (Stream ros = resp.OutputStream)
+                            {
+                                ros.Write(buffer, 0, buffer.Length);
+
+                            }
+
+                        }
+                    }
+                }, tokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+
+                Task.Delay(1000).Wait();
+
 
 
             }
