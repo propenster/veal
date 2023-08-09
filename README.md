@@ -20,12 +20,10 @@ A lightweight web app development framework in C#
         await t;
         return HttpResponder.Ok("Hello World Async");
     }
-
      ```
 
   * Create an HTTPServer in your entry method -> Main
      
-
   ```csharp
   var app = new HttpAppServer().Bind("http://localhost:4448/").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
 
