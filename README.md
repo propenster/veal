@@ -23,7 +23,7 @@ A lightweight web app development framework in C#
      ```
      
 
-  ## Create an HTTPServer in your entry method -> Main
+  ## Create an HTTPAppServer in your entry method -> Main
   ```c#
   
   var app = new HttpAppServer().Bind("http://localhost:4448/").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
