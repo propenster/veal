@@ -3,11 +3,11 @@ A lightweight web app development framework in C#
 
 ### Let's get on a journey of writing our own lightweight lean web app framework for c#.
 
-! I don't know what features we'll support yet but I'll think of something.
+ I don't know what features we'll support yet but I'll think of something.
 
   # To Get Started
   ## Create endpoints
-     ```csharp
+  ```c#
     [Get("/hello", "GetHelloEndpoint")]
     public HttpResponder Hello()
     {
@@ -24,13 +24,13 @@ A lightweight web app development framework in C#
      
 
   ## Create an HTTPServer in your entry method -> Main
-  ```csharp
+  ```c#
   
   var app = new HttpAppServer().Bind("http://localhost:4448/").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
-  ```
-
 
   ## Call app.Run() to start listenting for and treating requests.
-   ```csharp
+
     app.Run();
-    ```
+
+  ```
+
