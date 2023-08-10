@@ -20,6 +20,15 @@ A lightweight web app development framework in C#
         await t;
         return HttpResponder.Ok("Hello World Async");
     }
+
+    [Post("vealpostrequesturl", "MakeVealPostRequest")]
+    public HttpResponder SendVealRequest([JsonBody] VealRequest request)
+    {
+
+        var response = new VealResponse { DateOfRequest = DateTime.Now, RequestItem = request };
+
+        return HttpResponder.Ok(response);
+    }
      ```
      
 
@@ -33,4 +42,20 @@ A lightweight web app development framework in C#
     app.Run();
 
   ```
+
+# Day 2 - Progress
+ * Implement PostAttribute for HTTP POST endpoints
+ * Implement ModelBinding
+ * We are now able to serve both GET and POST requests via action methods
+ * We are also able to handle invalid URIs return 404 response
+## See images below for reference.
+
+* Veal Post action using Postman
+  
+![veal_first_request_v2](https://github.com/propenster/veal/assets/51266654/073321dd-3952-4fbf-8366-40ef6f4a6acf)
+
+* Veal Post action Using Rest Client on VSCode
+
+![veal_first_request_v3](https://github.com/propenster/veal/assets/51266654/fb837a10-8a12-41e5-8b29-1b9ca93735d6)
+
 
