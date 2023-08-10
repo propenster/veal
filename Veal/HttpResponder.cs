@@ -13,7 +13,7 @@ namespace Veal
         public string StatusDescription { get; set; }
         public long ContentLength { get; set; }
         public string ContentType { get; set; }
-        public System.Text.Encoding Encoding { get; set; }
+        public Encoding Encoding { get; set; } = Encoding.UTF8;
         public string Language { get; set; } = "en-US";
         public string ContentDisposition { get; set; }
         public object Value { get; set; }
@@ -27,8 +27,12 @@ namespace Veal
                 ContentType = "application/json",
                 ContentLength = 500,
                 StatusCode = (int)HttpStatusCode.OK,
-                StatusDescription = "Status OK"
+                StatusDescription = "200 OK"
             };
+        }
+        public override string ToString()
+        {
+            return Converter.SerializeObject(this);
         }
     }
 }

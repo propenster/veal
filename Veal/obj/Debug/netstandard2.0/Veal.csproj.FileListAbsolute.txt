@@ -1,10 +1,10 @@
-C:\Users\faith.olusegun\source\repos\Veal\Veal\bin\Debug\netstandard2.0\Veal.deps.json
-C:\Users\faith.olusegun\source\repos\Veal\Veal\bin\Debug\netstandard2.0\Veal.dll
-C:\Users\faith.olusegun\source\repos\Veal\Veal\bin\Debug\netstandard2.0\Veal.pdb
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.csproj.AssemblyReference.cache
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.AssemblyInfoInputs.cache
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.AssemblyInfo.cs
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.csproj.CoreCompileInputs.cache
+C:\Users\faith.olusegun\source\repos\Veal\Veal\bin\Debug\netstandard2.0\Veal.deps.json
+C:\Users\faith.olusegun\source\repos\Veal\Veal\bin\Debug\netstandard2.0\Veal.dll
+C:\Users\faith.olusegun\source\repos\Veal\Veal\bin\Debug\netstandard2.0\Veal.pdb
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.dll
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.pdb

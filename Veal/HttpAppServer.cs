@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,16 +7,19 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Kayak;
+using Kayak.Http;
+using System.Text.RegularExpressions;
 
 namespace Veal
 {
     internal interface IHttpAppServer
     {
         void Run();
-        //void RunTcp();
         HttpAppServer Bind(string prefix);
         HttpAppServer Services(IList<string> services);
     }
@@ -28,8 +30,6 @@ namespace Veal
         public HashSet<KeyValuePair<string, MethodInfo>> ActionList { get; set; } = new HashSet<KeyValuePair<string, MethodInfo>>();
 
         CancellationTokenSource tokenSource;
-
-
         public HttpAppServer Bind(string prefix)
         {
             this.Prefix = prefix.Trim();
@@ -37,90 +37,29 @@ namespace Veal
 
             return this;
         }
-
-        private static void Listen(HttpListener listener)
-        {
-            var prefixes = new List<String> { "http://localhost:8080/" };
-            prefixes.ForEach(s => listener.Prefixes.Add(s));
-            listener.Start();
-            Console.WriteLine("Listen: before GetContext");
-            try
-            {
-                var ctx = listener.GetContext();
-
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Listen: exception was thrown");
-            }
-            Console.WriteLine("Listen: end of function");
-        }
-
         public void Run()
         {
-            tokenSource = new CancellationTokenSource();
-            while (true)
+            var scheduler = KayakScheduler.Factory.Create(new SchedulerDelegate());
+            var server = KayakServer.Factory.CreateHttp(new RequestDelegate(this.Prefix, this.ActionList), scheduler);
+            if(this.Prefix.ToLowerInvariant().Contains("localhost"))
             {
-                if (string.IsNullOrWhiteSpace(this.Prefix)) throw new ArgumentNullException(nameof(this.Prefix));
-                var listener = new HttpListener();
-                listener.Prefixes.Add(this.Prefix);
+                this.Prefix = this.Prefix.ToLowerInvariant().Replace("localhost", "127.0.0.1");
+            }
+            var ipFromPrefix = (Regex.Match(this.Prefix, @"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"))?.Value;
+            IPAddress ipAddress = IPAddress.Parse(ipFromPrefix.Trim());
+            var port = int.Parse(this.Prefix.Split(':').LastOrDefault().Replace("/", string.Empty));
 
-                Task.Factory.StartNew(() =>
-                {
-                    try
-                    {
-                        listener.Start();
+            //using (server.Listen(new IPEndPoint(IPAddress.Any, 8080)))
+            using (server.Listen(new IPEndPoint(ipAddress, port)))
+            {
+                // runs scheduler on calling thread. this method will block until
+                // someone calls Stop() on the scheduler.
+                Console.WriteLine("Listening on Kayak Server v1.0.0 on IP {0} on port {1}...", ipAddress.ToString(), port);
 
-                    }
-                    catch (HttpListenerException ex)
-                    {
+                scheduler.Start();
 
-                        throw new PortUnavailableException(ex);
-                    }
-                    Console.WriteLine("Listening on port {0}...", this.Prefix.Split(':').LastOrDefault().Replace("/", string.Empty));
-
-
-                    if (!HttpListener.IsSupported)
-                    {
-                        Console.WriteLine("Windows XP SP2 or Server 2003 is required to use the HttpListener class.");
-                        return;
-                    }
-                    HttpListenerContext ctx = listener.GetContext();
-
-                    foreach (var item in ActionList)
-                    {
-                        if (ctx.Request.Url.ToString().Contains(item.Key)) continue; //return 404 instead of continue...
-                        Console.WriteLine($"Received request for {ctx.Request.Url}");
-
-                        using (var resp = ctx.Response)
-                        {
-                            var param = ctx.Request.QueryString;
-                            var type = item.Value.DeclaringType.Assembly.GetType();
-
-                            ParameterInfo[] parameters = item.Value.GetParameters();
-                            object classInstance = Activator.CreateInstance(type);
-
-                            var response = (HttpResponder)item.Value.Invoke(classInstance, parameters);
-
-                            response.ToListenerResponse(resp);
-
-                            byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(response.Value)); //of course we want to only do this if requestContentType is application/json or */*
-                            resp.ContentLength64 = buffer.Length;
-
-                            using (Stream ros = resp.OutputStream)
-                            {
-                                ros.Write(buffer, 0, buffer.Length);
-
-                            }
-
-                        }
-                    }
-                }, tokenSource.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-
-                Task.Delay(1000).Wait();
             }
         }
-
         public HttpAppServer Services(IList<string> services)
         {
             if (services is null || !services.Any()) throw new ArgumentNullException(nameof(services));
@@ -141,22 +80,9 @@ namespace Veal
                 if (!new Uri(string.Format("{0}{1}", this.Prefix, _route)).IsWellFormedOriginalString()) throw new ArgumentException(nameof(_route));
 
                 var url = new Uri(string.Format("{0}{1}", this.Prefix, _route)).ToString();
-
-
                 this.ActionList.Add(new KeyValuePair<string, MethodInfo>(url, kvp.Value));
-
             }
             return this;
-
-            //foreach (var service in services)
-            //{
-            //    if (!new Uri(string.Format("{0}{1}", this.Prefix, service)).IsWellFormedOriginalString()) throw new ArgumentException(nameof(service));
-            //    //{
-            //    //    //clean up the Uri here...
-            //    //}
-            //    this.ServiceList.Add(service);
-            //}
-            //return this;
         }
 
     }

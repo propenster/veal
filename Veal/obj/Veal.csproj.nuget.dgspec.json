@@ -40,6 +40,14 @@
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
           "dependencies": {
+            "Jil": {
+              "target": "Package",
+              "version": "[2.17.0, )"
+            },
+            "Kayak": {
+              "target": "Package",
+              "version": "[0.7.2, )"
+            },
             "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",

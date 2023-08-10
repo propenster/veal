@@ -15,4 +15,15 @@ namespace Veal
 
         }
     }
+    internal class PipelineException : Exception
+    {
+        public PipelineException(string message, Exception innerEx) : base(string.Format("An error occurred while treating the request {0}", message), innerEx)
+        {
+
+        }
+        public PipelineException(Exception innerEx) : base(string.Format("An error occurred while treating the request {0}", innerEx.Message), innerEx)
+        {
+
+        }
+    }
 }

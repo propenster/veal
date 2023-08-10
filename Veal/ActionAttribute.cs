@@ -6,6 +6,19 @@ using System.Xml.Linq;
 
 namespace Veal
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
+    public abstract class DataContentAttribute : Attribute
+    {
+        protected DataContentAttribute()
+        {
+        }
+    }
+    public class JsonBodyAttribute : DataContentAttribute
+    {
+        public JsonBodyAttribute() : base()
+        {
+        }
+    }
     [AttributeUsage(AttributeTargets.All, Inherited = true, AllowMultiple = false)]
     public abstract class ActionAttribute : Attribute
     {
@@ -21,5 +34,9 @@ namespace Veal
     public class GetAttribute : ActionAttribute
     {     
         public GetAttribute(string route, string name) : base(route, name) { }
+    }
+    public class PostAttribute : ActionAttribute
+    {
+        public PostAttribute(string route, string name) : base(route, name) { }
     }
 }
