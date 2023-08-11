@@ -61,5 +61,6 @@ A lightweight web app development framework in C#
 
 # Day 3 - Progress
  * Implement More Routing and support for RouteParameters - Path and Query Parameters
+ * Implement Route Parameter Attributes and start Parsing Route Params from the action route definition.
  * We need a RouteValueDictionary when OnRequest and we are going to try our possible best to avoid Microsoft.AspNetCore.Http.Routing and in fact any   
    Microsoft.AspNetCore at all. Let's create something simple and less-complicated for the Veal Framework itself. 
