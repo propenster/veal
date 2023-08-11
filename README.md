@@ -59,3 +59,6 @@ A lightweight web app development framework in C#
 ![veal_first_request_v3](https://github.com/propenster/veal/assets/51266654/fb837a10-8a12-41e5-8b29-1b9ca93735d6)
 
 
+# Day 3 - Progress
+ * Implement More Routing and support for RouteParameters, Path and Query Parameters
+ * 
