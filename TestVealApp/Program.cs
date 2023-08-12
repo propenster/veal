@@ -33,7 +33,7 @@ public class Program
         return HttpResponder.Ok(response);
     }
     [Post("vealpostrequesturl/id/{id:string}", "MakeVealPostRequest")]
-    public HttpResponder PostWithQuery([QueryParameter]string id, [JsonBody] VealRequest request)
+    public HttpResponder PostWithQuery([PathParameter]string id, [JsonBody] VealRequest request)
     {
         var response = new VealResponse {id = id, DateOfRequest = DateTime.Now, RequestItem = request };
         return HttpResponder.Ok(response);
