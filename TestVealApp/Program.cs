@@ -7,8 +7,6 @@ using BeetleX;
 using TestVealApp;
 using System.Text.RegularExpressions;
 using System.IO;
-using Microsoft.AspNetCore.Routing.Template;
-using Microsoft.AspNetCore.Routing;
 
 public class Program
 {
