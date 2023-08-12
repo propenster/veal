@@ -84,4 +84,11 @@ A lightweight web app development framework in C#
    Microsoft.AspNetCore at all. Let's create something simple and less-complicated for the Veal Framework itself.
 
 # Day 4 - Progress
-  * We implemented successfully Route and QueryParameter for Actions.
+  * We implemented successfully Route and Query Parameter for Actions.
+## See images below for reference.
+
+
+![VealPostWithParams](https://github.com/propenster/veal/assets/51266654/ca8f38d9-a845-4f91-b26b-aec88173113b)
+
+![VealGetWithparams](https://github.com/propenster/veal/assets/51266654/de7005f2-6a7e-40f1-bbf4-cac74578ad64)
+
