@@ -29,13 +29,31 @@ A lightweight web app development framework in C#
 
         return HttpResponder.Ok(response);
     }
+    [Post("vealpostrequesturl/id/{id:string}", "MakeVealPostRequest")]
+    public HttpResponder PostWithQuery([PathParameter]string id, [JsonBody] VealRequest request)
+    {
+        var response = new VealResponse {id = id, DateOfRequest = DateTime.Now, RequestItem = request };
+        return HttpResponder.Ok(response);
+    }
+    [Get("vealgetwithparameters/id/{id:string}?name={name:string}&age={age:int}", "MakeVealPostRequest")]
+    public HttpResponder GetWithParams([PathParameter] string id, [QueryParameter]string name, [QueryParameter]int age)
+    {
+        var response = new  {  DateOfRequest = DateTime.Now, id = id, name = name, age = age };
+        return HttpResponder.Ok(response);
+    }
+    [Post("vealpostrequesturl/id/{id:string}/orders?orderId={orderId:int}&itemId={itemId:long}", "MakeVealPostWithQueryRequest")]
+    public HttpResponder PostWithQueryPlus([PathParameter] string? id, [QueryParameter] int orderId, [QueryParameter] long itemId, [JsonBody] VealRequest request)
+    {
+        var response = new VealResponse { id = id, orderId = orderId, itemId = itemId, DateOfRequest = DateTime.Now, RequestItem = request };
+        return HttpResponder.Ok(response);
+    }
      ```
      
 
   ## Create an HTTPAppServer in your entry method -> Main
   ```c#
   
-  var app = new HttpAppServer().Bind("http://localhost:4448/").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
+  var app = new HttpAppServer().Bind("http://localhost:4448/").Setup();
 
   ## Call app.Run() to start listenting for and treating requests.
 
@@ -63,4 +81,7 @@ A lightweight web app development framework in C#
  * Implement More Routing and support for RouteParameters - Path and Query Parameters
  * Implement Route Parameter Attributes and start Parsing Route Params from the action route definition.
  * We need a RouteValueDictionary when OnRequest and we are going to try our possible best to avoid Microsoft.AspNetCore.Http.Routing and in fact any   
-   Microsoft.AspNetCore at all. Let's create something simple and less-complicated for the Veal Framework itself. 
+   Microsoft.AspNetCore at all. Let's create something simple and less-complicated for the Veal Framework itself.
+
+# Day 4 - Progress
+  * We implemented successfully Route and QueryParameter for Actions.
