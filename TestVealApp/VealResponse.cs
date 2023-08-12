@@ -8,6 +8,9 @@ namespace TestVealApp
 {
     public class VealResponse
     {
+        public string? id { get; set; }
+        public int? orderId { get; set; }
+        public long? itemId { get; set; }
         public DateTime DateOfRequest { get; set; } = DateTime.Now;
         public VealRequest RequestItem { get; set; }
     }

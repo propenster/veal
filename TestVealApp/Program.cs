@@ -5,6 +5,10 @@ using System;
 using Veal;
 using BeetleX;
 using TestVealApp;
+using System.Text.RegularExpressions;
+using System.IO;
+using Microsoft.AspNetCore.Routing.Template;
+using Microsoft.AspNetCore.Routing;
 
 public class Program
 {
@@ -28,11 +32,64 @@ public class Program
 
         return HttpResponder.Ok(response);
     }
+    [Post("vealpostrequesturl/id/{id:string}", "MakeVealPostRequest")]
+    public HttpResponder PostWithQuery([QueryParameter]string id, [JsonBody] VealRequest request)
+    {
+        var response = new VealResponse {id = id, DateOfRequest = DateTime.Now, RequestItem = request };
+        return HttpResponder.Ok(response);
+    }
+    [Get("vealgetwithparameters/id/{id:string}?name={name:string}&age={age:int}", "MakeVealPostRequest")]
+    public HttpResponder GetWithParams([PathParameter] string id, [QueryParameter]string name, [QueryParameter]int age)
+    {
+        var response = new  {  DateOfRequest = DateTime.Now, id = id, name = name, age = age };
+        return HttpResponder.Ok(response);
+    }
+    [Post("vealpostrequesturl/id/{id:string}/orders?orderId={orderId:int}&itemId={itemId:long}", "MakeVealPostWithQueryRequest")]
+    public HttpResponder PostWithQueryPlus([PathParameter] string? id, [QueryParameter] int orderId, [QueryParameter] long itemId, [JsonBody] VealRequest request)
+    {
+        var response = new VealResponse { id = id, orderId = orderId, itemId = itemId, DateOfRequest = DateTime.Now, RequestItem = request };
+        return HttpResponder.Ok(response);
+    }
+    private static void TestingRouting()
+    {
+        var pattern = @"\{(?<variable>\w+):(?<type>\w+)\}";
+        //var pathVars = Regex.Matches(routeTemplate, pattern);
+        //grab fromPath parameters... use them to replace our pathVars in our ActionUrls...actually action methods...in their order chronologically
+
+        var sampleUrl = "vealpostrequesturl/id/{id:string}/orders?orderId={orderId:int}&itemId={itemId:long}";
+        MatchCollection matches = Regex.Matches(sampleUrl, pattern);
+        Console.WriteLine("There are {0} route parameter matches ", matches.Count);
+
+        var afterTemplate = "vealpostrequesturl/id/{id:string}/orders?orderId={orderId:int}&itemId={itemId:long}"; //remove the types...
+        //let's use Regex to remove the DataTypeNames:
+        var afterTemplate2 = Regex.Replace(afterTemplate, @":(?<type>\w+)\}", "}");
+        Console.WriteLine("URL after removal of DataType Names >>> {0}", afterTemplate2);
+        //var afterTemplate2 = "vealpostrequesturl/id/{id}/orders?orderId={orderId}&itemId={itemId}"; //remove the types...
+        var matches2 = Regex.Matches(afterTemplate2, @"\{(?<variable>\w+)\}");
+        Console.WriteLine("After removing the DataTypeNames, we get {0} matches", matches2.Count);
+
+        //Now do we still get the same 3 matches when real-world values are in the URL?
+
+        var afterTemplate3 = "vealpostrequesturl/id/{345}/orders?orderId={127839}&itemId={555509}"; //this with real-world scenario values in routeParams
+        var matches3 = Regex.Matches(afterTemplate3, @"\{(?<variable>\w+)\}");
+        Console.WriteLine("After inserting Real-World Scenario values in RouteParameters, we now get {0} matches", matches3.Count);
+
+        //wow it worked...
+        //finally remove curly braces surrounding each of the routeParams
+
+        var cleanUrl = Regex.Replace(afterTemplate3, @"\{([^}]+)\}", "$1");
+        Console.WriteLine("Clean URL after all the routeParameter processing is done >>> {0}", cleanUrl);
+        //Outpute: vealpostrequesturl/id/345/orders?orderId=127839&itemId=555509
+        //You bet it works... 
+        //Now we need to return a RouteValueDictionary...
+    }
     public static void Main(string[] args)
     {
         Console.WriteLine("Hello, World!");
         Console.WriteLine("testing my new Veal App");
-        var app = new HttpAppServer().Bind("http://localhost:8449/").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
+        //var app = new HttpAppServer().Bind("http://localhost:8449/").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
+        var app = new HttpAppServer().Bind("http://localhost:8449/").Setup();
+
         try
         {
             app.Run();
@@ -93,23 +150,3 @@ public class Program
 }
 
 
-public class Test
-{
-    [Get("/hello", "GetHelloEndpoint")]
-    public string Hello()
-    {
-        return "Hello World";
-    }
-    [Get("/helloasync", "GetHelloAsyncEndpoint")]
-    public async Task<HttpResponder> HelloAsync()
-    {
-        Task t = new Task(() => Console.WriteLine("This is our first Async Action method"));
-        await t;
-        return HttpResponder.Ok("Hello World Async");
-    }
-    public void RunTestApp()
-    {
-        var app = new HttpAppServer().Bind("https://localhost:8001").Services(new List<string> { nameof(Hello), nameof(HelloAsync) });
-        app.Run();
-    }
-}

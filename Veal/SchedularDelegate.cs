@@ -13,6 +13,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Reflection.Metadata.Ecma335.Blobs;
 using System.Reflection.PortableExecutable;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Veal
 {
@@ -34,20 +38,76 @@ namespace Veal
     {
         private string _prefix;
         private HashSet<KeyValuePair<string, MethodInfo>> actionList;
+        private HashSet<RouteValueModel> routeValueDictionary;
 
-        public RequestDelegate(string prefix, HashSet<KeyValuePair<string, MethodInfo>> actionList)
+        public RequestDelegate(string prefix, HashSet<KeyValuePair<string, MethodInfo>> actionList, HashSet<RouteValueModel> routeValueDictionary)
         {
             _prefix = prefix;
             this.actionList = actionList;
+            this.routeValueDictionary = routeValueDictionary;
         }
+        private bool DoesActualUrlMatchTemplatePattern(string actualRequestUrl, string routeTemplateUrl)
+        {
+            var result = false;
 
+            var afterTemplate2 = Regex.Replace(routeTemplateUrl, @":(?<type>\w+)\}", "}");
+            Console.WriteLine("URL after removal of DataType Names >>> {0}", afterTemplate2);
+            //var afterTemplate2 = "vealpostrequesturl/id/{id}/orders?orderId={orderId}&itemId={itemId}"; //remove the types...
+            var matches2 = Regex.Matches(afterTemplate2, @"\{(?<variable>\w+)\}");
+            Console.WriteLine("After removing the DataTypeNames, we get {0} matches", matches2.Count);
+
+
+            var cleanUrl = Regex.Replace(afterTemplate2, @"\{([^}]+)\}", "$1");
+            Console.WriteLine("Clean URL after all the routeParameter processing is done >>> {0}", cleanUrl);
+
+
+            //var matches3 = Regex.Matches(afterTemplate3, @"\{(?<variable>\w+)\}");
+            var xxx = cleanUrl.Replace(this._prefix, "/");
+            //result = Regex.Matches(xxx, @"\{(?<variable>\w+)\}").Count > 0 && Regex.Matches(actualRequestUrl, @"\{(?<variable>\w+)\}").Count > 0;
+            //var similarity = findSimilarity(xxx, actualRequestUrl);
+            var similarity = similarStringsPercentage(xxx, actualRequestUrl);
+            Console.WriteLine("Similarity of strings >>> {0}", similarity);
+            result = similarity > 0.70;
+
+            return result;
+
+
+        }
+        public double similarStringsPercentage(string one, string two)
+        {
+            var commonChars = 0;
+            //var totalWordsChars = string.Concat(one, two).Length;
+            var (word, other) = one.Length >= two.Length ? (one, two) : (two, one);
+            var totalWordChars = word.Length;
+            //word is the longest... 
+            for (int i = 0; i < word.Length; i++)
+            {
+                if (i == other.Length - 1) break;
+                if (other.Contains(word[i]) && (other[i] == word[i])) commonChars++;
+            }
+
+            return (double)commonChars / totalWordChars;
+
+        }
+        private bool IsUrlDefined(string routeTemplateUrl, string actualUrl)
+        {
+            var routeTemplateSegments = new Uri(routeTemplateUrl).Segments;
+            var queryParamsRouteTemplate = HttpUtility.ParseQueryString(routeTemplateUrl);
+            var qpT = !queryParamsRouteTemplate.HasKeys() ? 0 : queryParamsRouteTemplate.Count;
+
+            var actualUrlSegments = new Uri(string.Concat(this._prefix, actualUrl.Substring(1, actualUrl.Length - 1))).Segments;
+            var actualUrlQueryParams = HttpUtility.ParseQueryString(actualUrl);
+            var qpA = !actualUrlQueryParams.HasKeys() ? 0 : actualUrlQueryParams.Count;
+
+            return (routeTemplateSegments.Length == actualUrlSegments.Length) && (qpT == qpA);
+
+        }
         public void OnRequest(HttpRequestHead request, IDataProducer requestBody,
                 IHttpResponseDelegate response)
         {
-            Console.WriteLine($"Received {request.Method.ToUpperInvariant()} request for {request.Uri} ABSOLUTEURL >>> {_prefix}{request.Path.Replace("/", string.Empty)}");
+            //Console.WriteLine($"Received {request.Method.ToUpperInvariant()} request for {request.Uri} ABSOLUTEURL >>> {_prefix}{request.Path.Replace("/", string.Empty)}");
 
-            var urlExists = this.actionList.FirstOrDefault(x => x.Key.Contains(request.Uri));
-
+            var urlExists = this.actionList.FirstOrDefault(x => IsUrlDefined(x.Key, request.Uri));
             if (string.IsNullOrWhiteSpace(urlExists.Key))
             {
                 //return 404
@@ -67,16 +127,42 @@ namespace Veal
             }
             else
             {
-                Console.WriteLine("What we are going to do if it's not 404...Of course we will handle more cases 401, 403, etc");
+                //capture routeParameter values... if any?
+                //
+                var totalParamObjects = new List<object>();
+
+                //Console.WriteLine("What we are going to do if it's not 404...Of course we will handle more cases 401, 403, etc");
                 if (request.Method.ToUpperInvariant() == "GET")
                 {
                     var param = request.QueryString;
 
                     var type = urlExists.Value.DeclaringType;
-                    ParameterInfo[] parameters = urlExists.Value.GetParameters();
                     object classInstance = Activator.CreateInstance(type, new object[] { });
+                    try
+                    {
+                        totalParamObjects = ExtractInvokationParameters(request, urlExists, string.Empty);
 
-                    var responderResponse = (HttpResponder)urlExists.Value.Invoke(classInstance, parameters);
+                    }
+                    catch (Exception ex)
+                    {
+
+                        var badRequestBody = string.Format("There is a problem with one or more action parameters {0} Exception {1}", request.Uri, ex.Message);
+                        var badRequestHeaders = new HttpResponseHead()
+                        {
+                            Status = "400 Bad Request",
+                            Headers = new Dictionary<string, string>()
+                    {
+                        { "Content-Type", "text/plain" },
+                                {"Connection", "close" },
+                        { "Content-Length", badRequestBody.Length.ToString() }
+                    }
+                        };
+                        var badBody = new BufferedProducer(badRequestBody);
+
+                        response.OnResponse(badRequestHeaders, badBody);
+                    }
+
+                    var responderResponse = (HttpResponder)urlExists.Value.Invoke(classInstance, totalParamObjects.ToArray());
                     Debug.WriteLine(responderResponse.ToString());
                     Console.WriteLine(responderResponse.ToString());
                     var body = string.Format("{0}", Converter.SerializeObject(responderResponse?.Value));
@@ -92,7 +178,55 @@ namespace Veal
                     };
                     if (request.Headers.ContainsKey("Content-Type"))
                         headers.Headers["Content-Type"] = request.Headers["Content-Type"];
-                    else headers.Headers["Content-Type"] = "text/plain";
+                    else headers.Headers["Content-Type"] = "application/json";
+
+                    response.OnResponse(headers, new BufferedProducer(body));
+                }
+                else if (request.Method.ToUpperInvariant() == "DELETE")
+                {
+                    var type = urlExists.Value.DeclaringType;
+                    object classInstance = Activator.CreateInstance(type, new object[] { });
+                    try
+                    {
+                        totalParamObjects = ExtractInvokationParameters(request, urlExists, string.Empty);
+
+                    }
+                    catch (Exception ex)
+                    {
+
+                        var badRequestBody = string.Format("There is a problem with one or more action parameters {0} Exception {1}", request.Uri, ex.Message);
+                        var badRequestHeaders = new HttpResponseHead()
+                        {
+                            Status = "400 Bad Request",
+                            Headers = new Dictionary<string, string>()
+                    {
+                        { "Content-Type", "text/plain" },
+                                {"Connection", "close" },
+                        { "Content-Length", badRequestBody.Length.ToString() }
+                    }
+                        };
+                        var badBody = new BufferedProducer(badRequestBody);
+
+                        response.OnResponse(badRequestHeaders, badBody);
+                    }
+
+                    var responderResponse = (HttpResponder)urlExists.Value.Invoke(classInstance, totalParamObjects.ToArray());
+                    Debug.WriteLine(responderResponse.ToString());
+                    Console.WriteLine(responderResponse.ToString());
+                    var body = string.Format("{0}", Converter.SerializeObject(responderResponse?.Value));
+
+                    var headers = new HttpResponseHead()
+                    {
+                        Status = responderResponse.StatusDescription,
+                        Headers = new Dictionary<string, string>()
+                    {
+                        { "Connection", "close" },
+                        { "Content-Length", body.Length.ToString() },
+                    }
+                    };
+                    if (request.Headers.ContainsKey("Content-Type"))
+                        headers.Headers["Content-Type"] = request.Headers["Content-Type"];
+                    else headers.Headers["Content-Type"] = "application/json";
 
                     response.OnResponse(headers, new BufferedProducer(body));
                 }
@@ -100,41 +234,53 @@ namespace Veal
                 {
                     requestBody.Connect(new BufferedConsumer(bufferedBody =>
                     {
-                        Console.WriteLine("Intercepted Body in the request {0}", bufferedBody);
-
-                        var param = request.QueryString;
-                        //handle query or route parameters here...
-                        //reflect them to actual parameter objects that we will pass to the action method
-
                         var type = urlExists.Value.DeclaringType;
+                        try
+                        {
+                            totalParamObjects = ExtractInvokationParameters(request, urlExists, bufferedBody);
 
-                        ParameterInfo[] parameters = urlExists.Value.GetParameters();
-                        var objectParam = parameters.FirstOrDefault(x => !x.ParameterType.IsPrimitive && x.ParameterType != typeof(Decimal) && x.ParameterType != typeof(String));
-                        var requestObj = JsonConvert.DeserializeObject(bufferedBody, objectParam.ParameterType);
+                        }
+                        catch (Exception ex)
+                        {
+
+                            var badRequestBody = string.Format("There is a problem with one or more action parameters {0} Exception {1}", request.Uri, ex.Message);
+                            var badRequestHeaders = new HttpResponseHead()
+                            {
+                                Status = "400 Bad Request",
+                                Headers = new Dictionary<string, string>()
+                    {
+                        { "Content-Type", "text/plain" },
+                                {"Connection", "close" },
+                        { "Content-Length", badRequestBody.Length.ToString() }
+                    }
+                            };
+                            var badBody = new BufferedProducer(badRequestBody);
+
+                            response.OnResponse(badRequestHeaders, badBody);
+                        }
+
                         //var requestObj = (objectParam.ParameterType) JSON.DeserializeDynamic(bufferedBody);
 
                         object classInstance = Activator.CreateInstance(type, new object[] { });
-                        //var responderResponse = (HttpResponder)urlExists.Value.Invoke(classInstance, parameters);
-                        var responderResponse = (HttpResponder)urlExists.Value.Invoke(classInstance, new object[] { requestObj });
 
-                        //responderResponse.ToListenerResponse(resp);
-                        Debug.WriteLine(responderResponse.ToString());
-                        Console.WriteLine(responderResponse.ToString());
+                        //System.Reflection.TargetParameterCountException: 'Parameter count mismatch.'//Return 400...
+                        //var responderResponse = (HttpResponder)urlExists.Value.Invoke(classInstance, new object[] { actualRouteParams, actualParams, requestObj });
+                        var responderResponse = (HttpResponder)urlExists.Value.Invoke(classInstance, totalParamObjects.ToArray());
+                        //System.ArgumentException: 'Object of type 'System.Int32' cannot be converted to type 'System.String'.'
                         var body = string.Format("{0}", Converter.SerializeObject(responderResponse?.Value));
 
                         var headers = new HttpResponseHead()
                         {
                             Status = responderResponse.StatusDescription,
                             Headers = new Dictionary<string, string>()
-                    {
-                        //{ "Content-Type", "text/plain" },
+                        {
                             { "Connection", "close" },
-                        { "Content-Length", body.Length.ToString() },
-                    }
+                            { "Content-Length", body.Length.ToString() },
+                        }
                         };
                         if (request.Headers.ContainsKey("Content-Type"))
                             headers.Headers["Content-Type"] = request.Headers["Content-Type"];
-                        else headers.Headers["Content-Type"] = "text/plain";
+                        else headers.Headers["Content-Type"] = "application/json";
 
                         response.OnResponse(headers, new BufferedProducer(body));
 
@@ -174,7 +320,65 @@ namespace Veal
 
         }
 
+        private new List<object> ExtractInvokationParameters(HttpRequestHead request, KeyValuePair<string, MethodInfo> urlExists, string bufferedBody = null)
+        {
+            var totalParamObjects = new List<object>();
+            ParameterInfo[] parameters = urlExists.Value.GetParameters();
+            //actualParams = default;
+            //actualRouteParams = default;
+            Dictionary<string, string> queryDict = new Dictionary<string, string>();
+            object[] actualParams, actualRouteParams;
 
+            string[] anyRouteParams;
+            var routeParamDict = new Dictionary<string, string>();
+
+            if (request.QueryString != null)
+            {
+                var items = request.QueryString.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries)
+.Select(s => s.Split(new[] { '=' }));
+                foreach (var item in items)
+                {
+                    queryDict.Add(item[0], item[1]);
+                }
+            }
+            var routeTemplateSegments = new Uri(string.Concat(this._prefix, urlExists.Key)).Segments;
+
+            Uri uri = new Uri(string.Concat(this._prefix, request.Uri.Substring(1, request.Uri.Length - 1)));
+            anyRouteParams = uri.Segments.Where(x => !routeTemplateSegments.Contains(x)).ToArray();
+            var pathIndex = 0;
+            if (parameters != null && parameters.Any())
+            {
+                foreach (var item in parameters)
+                {
+                    if (request.QueryString != null && queryDict.ContainsKey(item.Name) && item.GetCustomAttributes().OfType<QueryParameterAttribute>().Any() && (item.ParameterType.IsPrimitive || item.ParameterType == typeof(Decimal) || item.ParameterType == typeof(String)))
+                    {
+                        totalParamObjects.Add(Convert.ChangeType(queryDict[item.Name], item.ParameterType));
+                    }
+                    else if (anyRouteParams.Any() && item.GetCustomAttributes().OfType<PathParameterAttribute>().Any() && (item.ParameterType.IsPrimitive || item.ParameterType == typeof(Decimal) || item.ParameterType == typeof(String)))
+                    {
+
+                        totalParamObjects.Add(Convert.ChangeType(anyRouteParams[pathIndex].ToString().Replace("/", string.Empty), item.ParameterType));
+                        pathIndex++;
+
+                    }
+                    else if (!string.IsNullOrWhiteSpace(bufferedBody) && item.GetCustomAttributes().OfType<JsonBodyAttribute>().Any() && !item.ParameterType.IsPrimitive && item.ParameterType != typeof(Decimal) && item.ParameterType != typeof(String))
+                    {
+                        var requestObj = JsonConvert.DeserializeObject(bufferedBody, item.ParameterType);
+                        totalParamObjects.Add(requestObj);
+
+                    }
+                    else
+                    {
+
+                    }
+
+
+                }
+
+            }
+
+            return totalParamObjects;
+        }
     }
     //class RequestDelegate : IHttpRequestDelegate
     //{

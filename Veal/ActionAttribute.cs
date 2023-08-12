@@ -9,10 +9,28 @@ namespace Veal
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
     public abstract class DataContentAttribute : Attribute
     {
-        protected DataContentAttribute()
+        public  DataContentAttribute()
         {
         }
     }
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Parameter, Inherited = true, AllowMultiple = false)]
+    public abstract class RouteParameterAttribute : Attribute
+    {
+        public RouteParameterAttribute()
+        {
+        }
+    }
+    public class QueryParameterAttribute : RouteParameterAttribute
+    {
+        public QueryParameterAttribute()
+        {
+        }
+    }
+    public class PathParameterAttribute : RouteParameterAttribute
+    {
+        public PathParameterAttribute() { }
+    }
+
     public class JsonBodyAttribute : DataContentAttribute
     {
         public JsonBodyAttribute() : base()
