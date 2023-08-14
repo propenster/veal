@@ -79,11 +79,6 @@ A lightweight web app development framework in C#
         var response = new VealResponse { DateOfRequest = DateTime.Now };
         return HttpResponder.Ok(response);
     }
-
-
-
-
-
      ```
      
 
