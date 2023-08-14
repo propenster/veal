@@ -15,6 +15,7 @@ using Kayak;
 using Kayak.Http;
 using System.Text.RegularExpressions;
 using System.Collections.Immutable;
+using Jil;
 
 namespace Veal
 {
@@ -23,6 +24,7 @@ namespace Veal
         void Run();
         HttpAppServer Bind(string prefix);
         HttpAppServer Setup();
+        HttpAppServer AddOptions(Action<ConfigurationOptions> options);
     }
     public class HttpAppServer : IHttpAppServer
     {
@@ -30,8 +32,21 @@ namespace Veal
         public string Prefix { get; set; }
         public HashSet<KeyValuePair<string, MethodInfo>> ActionList { get; set; } = new HashSet<KeyValuePair<string, MethodInfo>>();
         public HashSet<RouteValueModel> RouteValueDictionary { get; set; } = new HashSet<RouteValueModel>();
+        public ConfigurationOptions ConfigurationOptions { get; set; } = new ConfigurationOptions();
 
         CancellationTokenSource tokenSource;
+
+
+        public HttpAppServer AddOptions(Action<ConfigurationOptions> options)
+        {
+            ConfigurationOptions newOptions = new ConfigurationOptions();
+            options?.Invoke(newOptions);
+
+            this.ConfigurationOptions = newOptions;
+
+            return this;
+        }
+
         /// <summary>
         /// Bind a baseURL e.g. http://127.0.0.1:8083/
         /// </summary>
@@ -50,7 +65,7 @@ namespace Veal
         public void Run()
         {
             var scheduler = KayakScheduler.Factory.Create(new SchedulerDelegate());
-            var server = KayakServer.Factory.CreateHttp(new RequestDelegate(this.Prefix, this.ActionList, this.RouteValueDictionary), scheduler);
+            var server = KayakServer.Factory.CreateHttp(new RequestDelegate(this), scheduler);
             if(this.Prefix.ToLowerInvariant().Contains("localhost"))
             {
                 this.Prefix = this.Prefix.ToLowerInvariant().Replace("localhost", "127.0.0.1");
@@ -175,5 +190,6 @@ namespace Veal
             return afterTemplate2;
         }
 
+       
     }
 }

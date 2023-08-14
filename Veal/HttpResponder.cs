@@ -19,7 +19,7 @@ namespace Veal
         public object Value { get; set; }
         public bool KeepAlive { get; set; }
 
-        public static HttpResponder Ok(object value)
+        public static HttpResponder Ok(object value = null)
         {
             return new HttpResponder
             {
@@ -28,6 +28,39 @@ namespace Veal
                 ContentLength = 500,
                 StatusCode = (int)HttpStatusCode.OK,
                 StatusDescription = "200 OK"
+            };
+        }
+        public static HttpResponder Unauthorized(object value = null)
+        {
+            return new HttpResponder
+            {
+                Value = value ?? string.Empty,
+                ContentType = "application/json",
+                ContentLength = 500,
+                StatusCode = (int)HttpStatusCode.Unauthorized,
+                StatusDescription = "401 Unauthorized"
+            };
+        }
+        public static HttpResponder Forbidden(object value = null)
+        {
+            return new HttpResponder
+            {
+                Value = value,
+                ContentType = "application/json",
+                ContentLength = 500,
+                StatusCode = (int)HttpStatusCode.Forbidden,
+                StatusDescription = "403 Forbidden"
+            };
+        }
+        public static HttpResponder BadRequest(object value = null)
+        {
+            return new HttpResponder
+            {
+                Value = value,
+                ContentType = "application/json",
+                ContentLength = 500,
+                StatusCode = (int)HttpStatusCode.BadRequest,
+                StatusDescription = "400 BadRequest"
             };
         }
         public override string ToString()
