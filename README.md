@@ -47,6 +47,43 @@ A lightweight web app development framework in C#
         var response = new VealResponse { id = id, orderId = orderId, itemId = itemId, DateOfRequest = DateTime.Now, RequestItem = request };
         return HttpResponder.Ok(response);
     }
+
+    [Get("getwithactionfilter", "GetWithActionFilter")]
+    [ActionFilter(typeof(SpecificRequestHeaderActionFilter))]
+    public HttpResponder GetWithActionFilter()
+    {
+        var response = new VealResponse { DateOfRequest = DateTime.Now };
+        return HttpResponder.Ok(response);
+    }
+    [Get("getwithauthorize", "GetWithAuthorize")]
+    [Authorize(Defaults.JwtBearerAuthScheme)] //this uses the DefaultAuthHandler, we implemented JwtAuthHandler for you... you can do any other schemes yourself by impelementing the IAuthorizationFilter
+    public HttpResponder GetWithAuthorize()
+    {
+        var response = new VealResponse { DateOfRequest = DateTime.Now };
+        return HttpResponder.Ok(response);
+    }
+    [Get("getwithauthorizedefaultbasicauth", "GetWithAuthorizeCustomAuth")]
+    [Authorize(Defaults.BasicAuthScheme)] //we made a default implementation for BasicAuth for you...
+    //you can also make your own:
+    //[Authorize("Basic", AuthHandlerType = typeof(MyCustomBasicAuthenticationFilter))]
+    public HttpResponder GetWithAuthorizeDefaultBasicAuth()
+    {
+        var response = new VealResponse { DateOfRequest = DateTime.Now };
+        return HttpResponder.Ok(response);
+    }
+    [Get("getwithauthorizecustomauth", "GetWithAuthorizeCustomAuth")]
+    //you can also make your own:
+    [Authorize("MyCustomAuthScheme", AuthHandlerType = typeof(MyCustomAuthenticationFilter))]
+    public HttpResponder GetWithAuthorizeCustomAuth()
+    {
+        var response = new VealResponse { DateOfRequest = DateTime.Now };
+        return HttpResponder.Ok(response);
+    }
+
+
+
+
+
      ```
      
 
@@ -91,4 +128,17 @@ A lightweight web app development framework in C#
 ![VealPostWithParams](https://github.com/propenster/veal/assets/51266654/ca8f38d9-a845-4f91-b26b-aec88173113b)
 
 ![VealGetWithparams](https://github.com/propenster/veal/assets/51266654/de7005f2-6a7e-40f1-bbf4-cac74578ad64)
+
+# Day 5, 6, 7
+  * Add support for ActionFilters 
+  * Add support for Authentication and Authorization
+  * Add Configuration Options
+
+## See images below for reference
+
+
+![get_with_actionfilter](https://github.com/propenster/veal/assets/51266654/3cdd6c94-5277-445e-9325-69769a47a407)
+    
+![GetWithBasicAuth](https://github.com/propenster/veal/assets/51266654/5725143b-9d96-481e-9fc4-b30b00a43704)
+
 
