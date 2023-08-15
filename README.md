@@ -84,29 +84,32 @@ A lightweight web app development framework in C#
 
   ## Create an HTTPAppServer in your entry method -> Main
   ```c#
-  
-  var app = new HttpAppServer().Bind("http://localhost:8449/")
-            .Setup()
-            .AddOptions(x =>
-                {
-                    x.AuthenticationConfigurations.Add(new JwtConfigurationOption
-                    {
-                        ValidateAudience = true,
-                        ValidateIssuer = true,
-                        ValidateLifetime = false,
-                        ValidAudience = "http://localhost",
-                        ClockSkew = TimeSpan.Zero,
-                        IssuerSigningKey = new SymmetricSecurityKey(jwtSecret),
-                        ValidIssuer = "http://localhost",
-                        AuthenticationConfigurations = null,
-                    });
-                    x.AuthenticationConfigurations.Add(new BasicAuthenticationOption
-                    {
-                        ValidUsername = "MyStrongUsername@12957#",
-                        ValidPassword = "ThouShallNotPass##@12893"
-                    });
 
-                });
+        var jwtSecret = Encoding.ASCII.GetBytes("myjwtsecKey");
+
+
+         var app = new HttpAppServer().Bind("http://localhost:8449/")
+                   .Setup()
+                   .AddOptions(x =>
+                       {
+                           x.AuthenticationConfigurations.Add(new JwtConfigurationOption
+                           {
+                               ValidateAudience = true,
+                               ValidateIssuer = true,
+                               ValidateLifetime = false,
+                               ValidAudience = "http://localhost",
+                               ClockSkew = TimeSpan.Zero,
+                               IssuerSigningKey = new SymmetricSecurityKey(jwtSecret),
+                               ValidIssuer = "http://localhost",
+                               AuthenticationConfigurations = null,
+                           });
+                           x.AuthenticationConfigurations.Add(new BasicAuthenticationOption
+                           {
+                               ValidUsername = "MyStrongUsername@12957#",
+                               ValidPassword = "ThouShallNotPass##@12893"
+                           });
+       
+                       });
 
   ## Call app.Run() to start listenting for and treating requests.
 
