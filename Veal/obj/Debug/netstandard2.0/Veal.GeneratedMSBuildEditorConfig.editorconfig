@@ -1,3 +1,5 @@
 is_global = true
 build_property.RootNamespace = Veal
-build_property.ProjectDir = C:\Users\faith.olusegun\source\repos\Veal\Veal\
+build_property.ProjectDir = C:\Users\faith.olusegun\source\repos\veal\Veal\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

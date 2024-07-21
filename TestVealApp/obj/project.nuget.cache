@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Q+8cHMigx1j6pEWfmFVo/ufw1cwPYsDSOXsW+/cWMS8xWtq+/8AlCEvxsee2nXEIOGh0COagiBPbUEu56aEnpQ==",
+  "dgSpecHash": "2ER7xM1IjOU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\faith.olusegun\\source\\repos\\Veal\\TestVealApp\\TestVealApp.csproj",
+  "projectFilePath": "C:\\Users\\faith.olusegun\\source\\repos\\veal\\TestVealApp\\TestVealApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\beetlex\\1.8.9.707\\beetlex.1.8.9.707.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\jil\\2.17.0\\jil.2.17.0.nupkg.sha512",
@@ -44,10 +44,10 @@
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\system.threading\\4.0.11-rc2-24027\\system.threading.4.0.11-rc2-24027.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\system.threading.tasks\\4.0.11-rc2-24027\\system.threading.tasks.4.0.11-rc2-24027.nupkg.sha512",
-    "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.16\\microsoft.windowsdesktop.app.ref.6.0.16.nupkg.sha512",
-    "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.16\\microsoft.netcore.app.ref.6.0.16.nupkg.sha512",
-    "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.16\\microsoft.aspnetcore.app.ref.6.0.16.nupkg.sha512",
-    "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.16\\microsoft.netcore.app.host.win-x64.6.0.16.nupkg.sha512"
+    "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.30\\microsoft.windowsdesktop.app.ref.6.0.30.nupkg.sha512",
+    "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.30\\microsoft.netcore.app.ref.6.0.30.nupkg.sha512",
+    "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.30\\microsoft.aspnetcore.app.ref.6.0.30.nupkg.sha512",
+    "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.30\\microsoft.netcore.app.host.win-x64.6.0.30.nupkg.sha512"
   ],
   "logs": [
     {

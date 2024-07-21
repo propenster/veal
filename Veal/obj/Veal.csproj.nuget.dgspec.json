@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\faith.olusegun\\source\\repos\\Veal\\Veal\\Veal.csproj": {}
+    "C:\\Users\\faith.olusegun\\source\\repos\\veal\\Veal\\Veal.csproj": {}
   },
   "projects": {
-    "C:\\Users\\faith.olusegun\\source\\repos\\Veal\\Veal\\Veal.csproj": {
+    "C:\\Users\\faith.olusegun\\source\\repos\\veal\\Veal\\Veal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\faith.olusegun\\source\\repos\\Veal\\Veal\\Veal.csproj",
+        "projectUniqueName": "C:\\Users\\faith.olusegun\\source\\repos\\veal\\Veal\\Veal.csproj",
         "projectName": "Veal",
-        "projectPath": "C:\\Users\\faith.olusegun\\source\\repos\\Veal\\Veal\\Veal.csproj",
+        "projectPath": "C:\\Users\\faith.olusegun\\source\\repos\\veal\\Veal\\Veal.csproj",
         "packagesPath": "C:\\Users\\faith.olusegun\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\faith.olusegun\\source\\repos\\Veal\\Veal\\obj\\",
+        "outputPath": "C:\\Users\\faith.olusegun\\source\\repos\\veal\\Veal\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
           "C:\\Users\\faith.olusegun\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,6 +39,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -78,7 +88,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }
