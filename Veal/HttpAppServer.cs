@@ -66,7 +66,7 @@ namespace Veal
         {
             var scheduler = KayakScheduler.Factory.Create(new SchedulerDelegate());
             var server = KayakServer.Factory.CreateHttp(new RequestDelegate(this), scheduler);
-            if(this.Prefix.ToLowerInvariant().Contains("localhost"))
+            if (this.Prefix.ToLowerInvariant().Contains("localhost"))
             {
                 this.Prefix = this.Prefix.ToLowerInvariant().Replace("localhost", "127.0.0.1");
             }
@@ -100,10 +100,16 @@ namespace Veal
                 .Where(y => y.IsPublic && y.GetCustomAttributes().OfType<ActionAttribute>().Any() && y.ReturnType == typeof(HttpResponder) || y.ReturnType == typeof(Task<HttpResponder>))
                     .GroupBy(x => x.Name)
                 .ToDictionary(z => z.Key, z => z.FirstOrDefault());
+            var optionalActionMethod = Assembly.GetEntryAssembly().GetTypes()
+                .SelectMany(x => x.GetMethods())
+                .Where(y => y.IsPublic && !y.GetCustomAttributes().OfType<ActionAttribute>().Any() && (y.ReturnType == typeof(HttpResponder) || y.ReturnType == typeof(Task<HttpResponder>)) && !y.DeclaringType.GetInterfaces().Contains(typeof(ICoreFilter)))
+                    .GroupBy(x => x.Name)
+                .ToDictionary(z => z.Key, z => z.FirstOrDefault());
+            methods = methods.Concat(optionalActionMethod).GroupBy(x => x.Key).ToDictionary(y => y.Key, y => y.Last().Value);
 
             foreach (var kvp in methods)
             {
-                var actionAttr = (ActionAttribute)kvp.Value.GetCustomAttributes(typeof(ActionAttribute), true)[0];
+                ActionAttribute actionAttr = ExtractActionMethodAttr(kvp);
                 var _route = actionAttr._Route;
                 _route = _route[0] == '/' ? _route.Substring(1, _route.Length - 1) : _route;
                 _route = _route.Contains("//") ? _route.Replace("//", "/") : _route;
@@ -129,6 +135,24 @@ namespace Veal
             }
             return this;
         }
+        /// <summary>
+        /// Extract method attribute..
+        /// </summary>
+        /// <param name="kvp"></param>
+        /// <returns></returns>
+        private static ActionAttribute ExtractActionMethodAttr(KeyValuePair<string, MethodInfo> kvp)
+        {
+            try
+            {
+                return (ActionAttribute)kvp.Value.GetCustomAttributes(typeof(ActionAttribute), true)[0];
+            }
+            catch (Exception)
+            {
+                //just put the name of the method as URL...
+                return new GetAttribute(kvp.Key, kvp.Key);
+            }
+        }
+
         //public HttpAppServer Services(IList<string> services)
         //{
         //    if (services is null || !services.Any()) throw new ArgumentNullException(nameof(services));
@@ -185,11 +209,11 @@ namespace Veal
         private string TransformRouteTemplate(string rawUrlTemplate)
         {
             var afterTemplate2 = Regex.Replace(rawUrlTemplate, @":(?<type>\w+)\}", "}");
-            Console.WriteLine("URL after removal of DataType Names >>> {0}", afterTemplate2);
+            //Console.WriteLine("URL after removal of DataType Names >>> {0}", afterTemplate2);
 
             return afterTemplate2;
         }
 
-       
+
     }
 }

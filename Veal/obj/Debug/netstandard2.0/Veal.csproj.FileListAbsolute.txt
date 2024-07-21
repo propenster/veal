@@ -8,3 +8,4 @@ C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.Ass
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.csproj.CoreCompileInputs.cache
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.dll
 C:\Users\faith.olusegun\source\repos\Veal\Veal\obj\Debug\netstandard2.0\Veal.pdb
+C:\Users\faith.olusegun\source\repos\veal\Veal\obj\Debug\netstandard2.0\Veal.sourcelink.json

@@ -16,7 +16,6 @@ C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\obj\Debug\net6.0\TestVealA
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\obj\Debug\net6.0\TestVealApp.AssemblyInfoInputs.cache
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\obj\Debug\net6.0\TestVealApp.AssemblyInfo.cs
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\obj\Debug\net6.0\TestVealApp.csproj.CoreCompileInputs.cache
-C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\obj\Debug\net6.0\TestVealApp.csproj.CopyComplete
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\obj\Debug\net6.0\TestVealApp.dll
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\obj\Debug\net6.0\refint\TestVealApp.dll
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\obj\Debug\net6.0\TestVealApp.pdb
@@ -27,3 +26,6 @@ C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\bin\Debug\net6.0\Microsoft
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\faith.olusegun\source\repos\veal\TestVealApp\obj\Debug\net6.0\TestVealApp.sourcelink.json
+C:\Users\faith.olusegun\source\repos\veal\TestVealApp\obj\Debug\net6.0\TestVeal.D1EF68BA.Up2Date
+C:\Users\faith.olusegun\source\repos\veal\TestVealApp\bin\Debug\net6.0\index.html

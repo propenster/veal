@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Veal
 {
-    public interface IAuthorizationFilter
+    public interface ICoreFilter { }
+    public interface IAuthorizationFilter : ICoreFilter
     {
         HttpResponder OnAuthentication(ActionExecutingContext context, string scheme);
 
