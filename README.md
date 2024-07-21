@@ -79,6 +79,14 @@ A lightweight web app development framework in C#
         var response = new VealResponse { DateOfRequest = DateTime.Now };
         return HttpResponder.Ok(response);
     }
+
+  //Serve static resource
+    [Get("/", "GetHtmlResource")]
+    public HttpResponder Index()
+    {
+        //this takes either the HTML content you want to return or a path to it...
+        return HttpResponder.Html("./index.html");
+    }
      ```
      
 
