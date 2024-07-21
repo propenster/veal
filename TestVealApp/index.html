@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veal Framework</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .navbar-custom {
+            background-color: indigo;
+        }
+
+            .navbar-custom .navbar-brand,
+            .navbar-custom .nav-link {
+                color: white;
+            }
+    </style>
+
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand" href="#">VealFramework</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://github.com/propenster/veal">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/propenster/veal">Github</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/propenster/veal">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <div class="container mt-5">
+        <h1>Veal</h1>
+        <p class="lead">A lightweight, open-source, cross-platform C# .NET framework for building modern cloud-based web applications on Windows, Mac, and Linux.</p>
+
+        <h3>Let's get on a journey of writing our own lightweight lean web app framework for C#.</h3>
+        <p>I don't know what features we'll support yet but I'll think of something.</p>
+
+        <h3>To Get Started</h3>
+        <h4>Create endpoints</h4>
+        <pre><code class="language-csharp">
+[Get("/hello", "GetHelloEndpoint")]
+public HttpResponder Hello()
+{
+    return HttpResponder.Ok("Hello World");
+}
+[Get("/helloasync", "GetHelloAsyncEndpoint")]
+public async Task&lt;HttpResponder&gt; HelloAsync()
+{
+    Task t = new Task(() => Console.WriteLine("This is our first Async Action method"));
+    await t;
+    return HttpResponder.Ok("Hello World Async");
+}
+
+[Post("vealpostrequesturl", "MakeVealPostRequest")]
+public HttpResponder SendVealRequest([JsonBody] VealRequest request)
+{
+    var response = new VealResponse { DateOfRequest = DateTime.Now, RequestItem = request };
+    return HttpResponder.Ok(response);
+}
+[Post("vealpostrequesturl/id/{id:string}", "MakeVealPostRequest")]
+public HttpResponder PostWithQuery([PathParameter]string id, [JsonBody] VealRequest request)
+{
+    var response = new VealResponse {id = id, DateOfRequest = DateTime.Now, RequestItem = request };
+    return HttpResponder.Ok(response);
+}
+[Get("vealgetwithparameters/id/{id:string}?name={name:string}&age={age:int}", "MakeVealPostRequest")]
+public HttpResponder GetWithParams([PathParameter] string id, [QueryParameter]string name, [QueryParameter]int age)
+{
+    var response = new  {  DateOfRequest = DateTime.Now, id = id, name = name, age = age };
+    return HttpResponder.Ok(response);
+}
+[Post("vealpostrequesturl/id/{id:string}/orders?orderId={orderId:int}&itemId={itemId:long}", "MakeVealPostWithQueryRequest")]
+public HttpResponder PostWithQueryPlus([PathParameter] string? id, [QueryParameter] int orderId, [QueryParameter] long itemId, [JsonBody] VealRequest request)
+{
+    var response = new VealResponse { id = id, orderId = orderId, itemId = itemId, DateOfRequest = DateTime.Now, RequestItem = request };
+    return HttpResponder.Ok(response);
+}
+
+[Get("getwithactionfilter", "GetWithActionFilter")]
+[ActionFilter(typeof(SpecificRequestHeaderActionFilter))]
+public HttpResponder GetWithActionFilter()
+{
+    var response = new VealResponse { DateOfRequest = DateTime.Now };
+    return HttpResponder.Ok(response);
+}
+[Get("getwithauthorize", "GetWithAuthorize")]
+[Authorize(Defaults.JwtBearerAuthScheme)] 
+public HttpResponder GetWithAuthorize()
+{
+    var response = new VealResponse { DateOfRequest = DateTime.Now };
+    return HttpResponder.Ok(response);
+}
+[Get("getwithauthorizedefaultbasicauth", "GetWithAuthorizeCustomAuth")]
+[Authorize(Defaults.BasicAuthScheme)] 
+public HttpResponder GetWithAuthorizeDefaultBasicAuth()
+{
+    var response = new VealResponse { DateOfRequest = DateTime.Now };
+    return HttpResponder.Ok(response);
+}
+[Get("getwithauthorizecustomauth", "GetWithAuthorizeCustomAuth")]
+[Authorize("MyCustomAuthScheme", AuthHandlerType = typeof(MyCustomAuthenticationFilter))]
+public HttpResponder GetWithAuthorizeCustomAuth()
+{
+    var response = new VealResponse { DateOfRequest = DateTime.Now };
+    return HttpResponder.Ok(response);
+}
+        </code></pre>
+
+        <h4>Create an HTTPAppServer in your entry method -> Main</h4>
+        <pre><code class="language-csharp">
+var jwtSecret = Encoding.ASCII.GetBytes("myjwtsecKey");
+
+var app = new HttpAppServer().Bind("http://localhost:8449/")
+           .Setup()
+           .AddOptions(x =>
+               {
+                   x.AuthenticationConfigurations.Add(new JwtConfigurationOption
+                   {
+                       ValidateAudience = true,
+                       ValidateIssuer = true,
+                       ValidateLifetime = false,
+                       ValidAudience = "http://localhost",
+                       ClockSkew = TimeSpan.Zero,
+                       IssuerSigningKey = new SymmetricSecurityKey(jwtSecret),
+                       ValidIssuer = "http://localhost",
+                       AuthenticationConfigurations = null,
+                   });
+                   x.AuthenticationConfigurations.Add(new BasicAuthenticationOption
+                   {
+                       ValidUsername = "MyStrongUsername@12957#",
+                       ValidPassword = "ThouShallNotPass##@12893"
+                   });
+   
+               });
+
+app.Run();
+        </code></pre>
+
+        <h2>Day 2 - Progress</h2>
+        <ul>
+            <li>Implement PostAttribute for HTTP POST endpoints</li>
+            <li>Implement ModelBinding</li>
+            <li>We are now able to serve both GET and POST requests via action methods</li>
+            <li>We are also able to handle invalid URIs return 404 response</li>
+        </ul>
+        <p>See images below for reference.</p>
+        <p>Veal Post action using Postman</p>
+        <img src="https://github.com/propenster/veal/assets/51266654/073321dd-3952-4fbf-8366-40ef6f4a6acf" alt="veal_first_request_v2" class="img-fluid">
+        <p>Veal Post action Using Rest Client on VSCode</p>
+        <img src="https://github.com/propenster/veal/assets/51266654/fb837a10-8a12-41e5-8b29-1b9ca93735d6" alt="veal_first_request_v3" class="img-fluid">
+
+        <h2>Day 3 - Progress</h2>
+        <ul>
+            <li>Implement More Routing and support for RouteParameters - Path and Query Parameters</li>
+            <li>Implement Route Parameter Attributes and start Parsing Route Params from the action route definition.</li>
+            <li>We need a RouteValueDictionary when OnRequest and we are going to try our possible best to avoid Microsoft.AspNetCore.Http.Routing and in fact any Microsoft.AspNetCore at all. Let's create something simple and less-complicated for the Veal Framework itself.</li>
+        </ul>
+
+        <h2>Day 4 - Progress</h2>
+        <ul>
+            <li>We implemented successfully Route and Query Parameter for Actions.</li>
+        </ul>
+        <p>See images below for reference.</p>
+        <img src="https://github.com/propenster/veal/assets/51266654/ca8f38d9-a845-4f91-b26b-aec88173113b" alt="VealPostWithParams" class="img-fluid">
+        <img src="https://github.com/propenster/veal/assets/51266654/de7005f2-6a7e-40f1-bbf4-cac74578ad64" alt="VealGetWithparams" class="img-fluid">
+
+        <h2>Day 5, 6, 7</h2>
+        <ul>
+            <li>Add support for ActionFilters</li>
+            <li>Add support for Authentication and Authorization</li>
+            <li>Add Configuration Options</li>
+        </ul>
+        <p>See images below for reference.</p>
+        <img src="https://github.com/propenster/veal/assets/51266654/3cdd6c94-5277-445e-9325-69769a47a407" alt="get_with_actionfilter" class="img-fluid">
+        <img src="https://github.com/propenster/veal/assets/51266654/5725143b-9d96-481e-9fc4-b30b00a43704" alt="GetWithBasicAuth" class="img-fluid">
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

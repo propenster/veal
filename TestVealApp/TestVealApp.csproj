@@ -15,4 +15,10 @@
     <ProjectReference Include="..\Veal\Veal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -38,22 +38,20 @@ namespace Veal
             var result = false;
 
             var afterTemplate2 = Regex.Replace(routeTemplateUrl, @":(?<type>\w+)\}", "}");
-            Console.WriteLine("URL after removal of DataType Names >>> {0}", afterTemplate2);
+            //Console.WriteLine("URL after removal of DataType Names >>> {0}", afterTemplate2);
             //var afterTemplate2 = "vealpostrequesturl/id/{id}/orders?orderId={orderId}&itemId={itemId}"; //remove the types...
             var matches2 = Regex.Matches(afterTemplate2, @"\{(?<variable>\w+)\}");
-            Console.WriteLine("After removing the DataTypeNames, we get {0} matches", matches2.Count);
-
+            //Console.WriteLine("After removing the DataTypeNames, we get {0} matches", matches2.Count);
 
             var cleanUrl = Regex.Replace(afterTemplate2, @"\{([^}]+)\}", "$1");
-            Console.WriteLine("Clean URL after all the routeParameter processing is done >>> {0}", cleanUrl);
-
+            //Console.WriteLine("Clean URL after all the routeParameter processing is done >>> {0}", cleanUrl);
 
             //var matches3 = Regex.Matches(afterTemplate3, @"\{(?<variable>\w+)\}");
             var xxx = cleanUrl.Replace(_app.Prefix, "/");
             //result = Regex.Matches(xxx, @"\{(?<variable>\w+)\}").Count > 0 && Regex.Matches(actualRequestUrl, @"\{(?<variable>\w+)\}").Count > 0;
             //var similarity = findSimilarity(xxx, actualRequestUrl);
             var similarity = similarStringsPercentage(xxx, actualRequestUrl);
-            Console.WriteLine("Similarity of strings >>> {0}", similarity);
+            //Console.WriteLine("Similarity of strings >>> {0}", similarity);
             result = similarity > 0.70;
 
             return result;
@@ -89,11 +87,17 @@ namespace Veal
             return (routeTemplateSegments.Length == actualUrlSegments.Length) && (qpT == qpA);
 
         }
+        static string RemoveBaseUrl(string url)
+        {
+            if (!Uri.TryCreate(url, UriKind.Absolute, out Uri uri)) return url;
+            return uri.PathAndQuery;
+        }
         public void OnRequest(HttpRequestHead request, IDataProducer requestBody,
                 IHttpResponseDelegate response)
         {
             //Console.WriteLine($"Received {request.Method.ToUpperInvariant()} request for {request.Uri} ABSOLUTEURL >>> {_prefix}{request.Path.Replace("/", string.Empty)}");
-            var urlExists = _app.ActionList.FirstOrDefault(x => x.Key.Replace(_app.Prefix, "/").Contains(request.Uri));
+            //var urlExists = _app.ActionList.FirstOrDefault(x => x.Key.Replace(_app.Prefix, "/").Contains(request.Uri));
+            var urlExists = _app.ActionList.FirstOrDefault(x => RemoveBaseUrl(x.Key) == request.Uri);
             if (string.IsNullOrWhiteSpace(urlExists.Key))
             {
                 urlExists = _app.ActionList.FirstOrDefault(x => IsUrlDefined(x.Key, request.Uri));
@@ -101,6 +105,9 @@ namespace Veal
 
             if (string.IsNullOrWhiteSpace(urlExists.Key))
             {
+                //or maybe the requestUri is a static file e.g index.html, 
+
+
                 //return 404
                 var responseBody = string.Format("The resource you requested '{0}' could not be found.", request.Uri);
                 var headers = new HttpResponseHead()
@@ -132,7 +139,7 @@ namespace Veal
                     Request = request,
                     Result = null,
                 };
-                
+
                 var totalParamObjects = new List<object>();
 
                 //Console.WriteLine("What we are going to do if it's not 404...Of course we will handle more cases 401, 403, etc");
@@ -181,22 +188,32 @@ namespace Veal
                     }
 
                     var responderResponse = (HttpResponder)urlExists.Value.Invoke(classInstance, totalParamObjects.ToArray());
-                    Debug.WriteLine(responderResponse.ToString());
-                    Console.WriteLine(responderResponse.ToString());
-                    var body = string.Format("{0}", Converter.SerializeObject(responderResponse?.Value));
+                    //Debug.WriteLine(responderResponse.ToString());
+                    //Console.WriteLine(responderResponse.ToString());
+                    var body = responderResponse.ContentType.Contains("json") ? string.Format("{0}", Converter.SerializeObject(responderResponse?.Value)) : responderResponse.Value.ToString();
 
+                    //headers = new HttpResponseHead()
+                    //{
+                    //    Status = responderResponse.StatusDescription,
+                    //    Headers = new Dictionary<string, string>()
+                    //{
+                    //    { "Connection", "close" },
+                    //    { "Content-Length", body.Length.ToString() },
+                    //}
+                    //};
                     headers = new HttpResponseHead()
                     {
                         Status = responderResponse.StatusDescription,
                         Headers = new Dictionary<string, string>()
                     {
                         { "Connection", "close" },
-                        { "Content-Length", body.Length.ToString() },
+                        { "Content-Length", responderResponse.ContentLength.ToString() },
                     }
                     };
                     if (request.Headers.ContainsKey("Content-Type"))
                         headers.Headers["Content-Type"] = request.Headers["Content-Type"];
-                    else headers.Headers["Content-Type"] = "application/json";
+                    //else headers.Headers["Content-Type"] = "application/json";
+                    else headers.Headers["Content-Type"] = responderResponse.ContentType;
 
                     response.OnResponse(headers, new BufferedProducer(body));
                     return;
@@ -279,7 +296,7 @@ namespace Veal
                             return;
                         }
 
-                       var type = urlExists.Value.DeclaringType;
+                        var type = urlExists.Value.DeclaringType;
                         try
                         {
                             totalParamObjects = ExtractInvokationParameters(request, urlExists, bufferedBody);
@@ -330,7 +347,7 @@ namespace Veal
 
                     }, error =>
                     {
-                       
+
                         throw new PipelineException(error);
 
 
@@ -378,7 +395,7 @@ namespace Veal
                 {
                     Type authHandlerFilterType = item.AuthHandlerType;
                     Type interfaceType = typeof(IAuthorizationFilter);
-                    
+
                     if (interfaceType.IsAssignableFrom(authHandlerFilterType))
                     {
                         object objInstance = Activator.CreateInstance(authHandlerFilterType, new object[] { });
@@ -493,25 +510,25 @@ namespace Veal
             }
         }
 
-            private static void NewMethod(HttpRequestHead request, IHttpResponseDelegate response, HttpResponder responderResponse)
-            {
-                var body = string.Format("{0}", Converter.SerializeObject(responderResponse?.Value));
+        private static void NewMethod(HttpRequestHead request, IHttpResponseDelegate response, HttpResponder responderResponse)
+        {
+            var body = string.Format("{0}", Converter.SerializeObject(responderResponse?.Value));
 
-                var headers = new HttpResponseHead()
-                {
-                    Status = responderResponse.StatusDescription,
-                    Headers = new Dictionary<string, string>()
+            var headers = new HttpResponseHead()
+            {
+                Status = responderResponse.StatusDescription,
+                Headers = new Dictionary<string, string>()
                         {
                             { "Connection", "close" },
                             { "Content-Length", body.Length.ToString() },
                         }
-                };
-                if (request.Headers.ContainsKey("Content-Type"))
-                    headers.Headers["Content-Type"] = request.Headers["Content-Type"];
-                else headers.Headers["Content-Type"] = "application/json";
+            };
+            if (request.Headers.ContainsKey("Content-Type"))
+                headers.Headers["Content-Type"] = request.Headers["Content-Type"];
+            else headers.Headers["Content-Type"] = "application/json";
 
-                response.OnResponse(headers, new BufferedProducer(body));
-            }
+            response.OnResponse(headers, new BufferedProducer(body));
+        }
 
         private new List<object> ExtractInvokationParameters(HttpRequestHead request, KeyValuePair<string, MethodInfo> urlExists, string bufferedBody = null)
         {

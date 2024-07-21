@@ -81,6 +81,12 @@ public class Program
         var response = new VealResponse { DateOfRequest = DateTime.Now };
         return HttpResponder.Ok(response);
     }
+    [Get("/", "GetHtmlResource")]
+    public HttpResponder Index()
+    {
+        //this takes either the HTML content you want to return or a path to it...
+        return HttpResponder.Html("./index.html");
+    }
     public static void Main(string[] args)
     {
         Console.WriteLine("Hello, World!");

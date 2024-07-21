@@ -14,7 +14,7 @@ namespace Veal
         public HttpResponder Result { get; set; } = null;
 
     }
-    public interface IActionFilter
+    public interface IActionFilter : ICoreFilter
     {
         HttpResponder OnActionExecution(ActionExecutingContext context /**, ActionExecutionDelegate next**/);
     }
