@@ -160,4 +160,14 @@ A lightweight web app development framework in C#
     
 ![GetWithBasicAuth](https://github.com/propenster/veal/assets/51266654/5725143b-9d96-481e-9fc4-b30b00a43704)
 
+# Day 332
+  * Add support for staic files - Veal can now serve HTML files
+
+## See images below for reference
+
+![vealFramework_snippet](https://github.com/user-attachments/assets/0a73f4d2-489c-4b2a-9640-b54ee725420a)
+
+<img width="959" alt="VEAL_Framework_" src="https://github.com/user-attachments/assets/6a246a24-384b-411e-b730-8dc2cb720a53">
+
+
 
