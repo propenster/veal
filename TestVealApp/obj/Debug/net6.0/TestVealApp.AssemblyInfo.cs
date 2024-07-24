@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TestVealApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0bf86589c80ece57f5e3b833eae9d9422210410")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+768157451e737570f2ac4960a937b7f58ea0e4c9")]
 [assembly: System.Reflection.AssemblyProductAttribute("TestVealApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TestVealApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
