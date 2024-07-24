@@ -10,6 +10,8 @@
 *.userosscache
 *.sln.docstates
 
+/.vs
+.vs
 /obj
 /bin
 **/bin
