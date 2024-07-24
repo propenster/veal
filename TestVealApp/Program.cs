@@ -32,15 +32,15 @@ public class Program
         return HttpResponder.Ok(response);
     }
     [Post("vealpostrequesturl/id/{id:string}", "MakeVealPostRequest")]
-    public HttpResponder PostWithQuery([PathParameter]string id, [JsonBody] VealRequest request)
+    public HttpResponder PostWithQuery([PathParameter] string id, [JsonBody] VealRequest request)
     {
-        var response = new VealResponse {id = id, DateOfRequest = DateTime.Now, RequestItem = request };
+        var response = new VealResponse { id = id, DateOfRequest = DateTime.Now, RequestItem = request };
         return HttpResponder.Ok(response);
     }
     [Get("vealgetwithparameters/id/{id:string}?name={name:string}&age={age:int}", "MakeVealPostRequest")]
-    public HttpResponder GetWithParams([PathParameter] string id, [QueryParameter]string name, [QueryParameter]int age)
+    public HttpResponder GetWithParams([PathParameter] string id, [QueryParameter] string name, [QueryParameter] int age)
     {
-        var response = new  {  DateOfRequest = DateTime.Now, id = id, name = name, age = age };
+        var response = new { DateOfRequest = DateTime.Now, id = id, name = name, age = age };
         return HttpResponder.Ok(response);
     }
     [Post("vealpostrequesturl/id/{id:string}/orders?orderId={orderId:int}&itemId={itemId:long}", "MakeVealPostWithQueryRequest")]
@@ -85,7 +85,21 @@ public class Program
     public HttpResponder Index()
     {
         //this takes either the HTML content you want to return or a path to it...
-        return HttpResponder.Html("./index.html");
+        var name = "Faith";
+        var testModel = new VealResponse
+        {
+            DateOfRequest = DateTime.UtcNow,
+            itemId = 102002,
+            id = Guid.NewGuid().ToString(),
+            orderId = 154,
+            RequestItem = new VealRequest()
+        };
+        var names = new List<string> { "Ayo", "John", "William", "Wilhelm", "Kelly", "Chuks" };
+
+        var viewContext = new ViewContext();
+        viewContext.Add("Name", name);
+        viewContext.Add("listOfNames", names);
+        return HttpResponder.Html("./index.html", viewContext); //.With("responseModel", testModel);
     }
     public static void Main(string[] args)
     {
@@ -112,8 +126,8 @@ public class Program
             {
                 ValidUsername = "MyStrongUsername@12957#",
                 ValidPassword = "ThouShallNotPass##@12893"
-            });           
-            
+            });
+
         });
 
         try

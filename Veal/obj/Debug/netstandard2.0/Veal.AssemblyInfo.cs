@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Veal")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e2a8091b26b2d4892aaba1ba729d32917df7c2a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0bf86589c80ece57f5e3b833eae9d9422210410")]
 [assembly: System.Reflection.AssemblyProductAttribute("Veal")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Veal")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

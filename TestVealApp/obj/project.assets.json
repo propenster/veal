@@ -28,6 +28,19 @@
           }
         }
       },
+      "JinianNet.JNTemplate/2.4.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/JinianNet.JNTemplate.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/JinianNet.JNTemplate.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Kayak/0.7.2": {
         "type": "package",
         "compile": {
@@ -574,6 +587,7 @@
         "framework": ".NETStandard,Version=v2.0",
         "dependencies": {
           "Jil": "2.17.0",
+          "JinianNet.JNTemplate": "2.4.2",
           "Kayak": "0.7.2",
           "Microsoft.IdentityModel.Tokens": "6.32.1",
           "Newtonsoft.Json": "13.0.3",
@@ -621,6 +635,45 @@
         "lib/netstandard1.6/Jil.xml",
         "lib/netstandard2.0/Jil.dll",
         "lib/netstandard2.0/Jil.xml"
+      ]
+    },
+    "JinianNet.JNTemplate/2.4.2": {
+      "sha512": "FFwQz3UMCbNwe+0JqscBfMRJ72y+BbKjqQztOCuYHXXpxkukviiUMMfZL8UGKsjf0tzZG2ultFjTNi+9HPvWwg==",
+      "type": "package",
+      "path": "jiniannet.jntemplate/2.4.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "License.txt",
+        "icon.png",
+        "jiniannet.jntemplate.2.4.2.nupkg.sha512",
+        "jiniannet.jntemplate.nuspec",
+        "lib/net20/JinianNet.JNTemplate.dll",
+        "lib/net20/JinianNet.JNTemplate.xml",
+        "lib/net35/JinianNet.JNTemplate.dll",
+        "lib/net35/JinianNet.JNTemplate.xml",
+        "lib/net40/JinianNet.JNTemplate.dll",
+        "lib/net40/JinianNet.JNTemplate.xml",
+        "lib/net45/JinianNet.JNTemplate.dll",
+        "lib/net45/JinianNet.JNTemplate.xml",
+        "lib/net46/JinianNet.JNTemplate.dll",
+        "lib/net46/JinianNet.JNTemplate.xml",
+        "lib/net5.0/JinianNet.JNTemplate.dll",
+        "lib/net5.0/JinianNet.JNTemplate.xml",
+        "lib/net6.0/JinianNet.JNTemplate.dll",
+        "lib/net6.0/JinianNet.JNTemplate.xml",
+        "lib/net7.0/JinianNet.JNTemplate.dll",
+        "lib/net7.0/JinianNet.JNTemplate.xml",
+        "lib/net8.0/JinianNet.JNTemplate.dll",
+        "lib/net8.0/JinianNet.JNTemplate.xml",
+        "lib/netcoreapp2.1/JinianNet.JNTemplate.dll",
+        "lib/netcoreapp2.1/JinianNet.JNTemplate.xml",
+        "lib/netcoreapp3.1/JinianNet.JNTemplate.dll",
+        "lib/netcoreapp3.1/JinianNet.JNTemplate.xml",
+        "lib/netstandard2.0/JinianNet.JNTemplate.dll",
+        "lib/netstandard2.0/JinianNet.JNTemplate.xml",
+        "lib/netstandard2.1/JinianNet.JNTemplate.dll",
+        "lib/netstandard2.1/JinianNet.JNTemplate.xml"
       ]
     },
     "Kayak/0.7.2": {

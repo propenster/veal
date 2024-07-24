@@ -169,7 +169,7 @@ A lightweight web app development framework in C#
 ![GetWithBasicAuth](https://github.com/propenster/veal/assets/51266654/5725143b-9d96-481e-9fc4-b30b00a43704)
 
 # Day 332
-  * Add support for staic files - Veal can now serve HTML files
+  * Add support for static files - Veal can now serve HTML files
 
 ## See images below for reference
 
@@ -177,5 +177,7 @@ A lightweight web app development framework in C#
 
 <img width="959" alt="VEAL_Framework_" src="https://github.com/user-attachments/assets/6a246a24-384b-411e-b730-8dc2cb720a53">
 
-
+# Day 335
+   * Add support for templating, passing and rendering view contexts on static files
+![img.png](img.png)
 

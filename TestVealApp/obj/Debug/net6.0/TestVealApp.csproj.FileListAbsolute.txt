@@ -29,3 +29,4 @@ C:\Users\faith.olusegun\source\repos\Veal\TestVealApp\bin\Debug\net6.0\System.Id
 C:\Users\faith.olusegun\source\repos\veal\TestVealApp\obj\Debug\net6.0\TestVealApp.sourcelink.json
 C:\Users\faith.olusegun\source\repos\veal\TestVealApp\obj\Debug\net6.0\TestVeal.D1EF68BA.Up2Date
 C:\Users\faith.olusegun\source\repos\veal\TestVealApp\bin\Debug\net6.0\index.html
+C:\Users\faith.olusegun\source\repos\veal\TestVealApp\bin\Debug\net6.0\JinianNet.JNTemplate.dll

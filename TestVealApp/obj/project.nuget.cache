@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "2ER7xM1IjOU=",
+  "dgSpecHash": "BUbsxgwFZSU=",
   "success": true,
   "projectFilePath": "C:\\Users\\faith.olusegun\\source\\repos\\veal\\TestVealApp\\TestVealApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\beetlex\\1.8.9.707\\beetlex.1.8.9.707.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\jil\\2.17.0\\jil.2.17.0.nupkg.sha512",
+    "C:\\Users\\faith.olusegun\\.nuget\\packages\\jiniannet.jntemplate\\2.4.2\\jiniannet.jntemplate.2.4.2.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\kayak\\0.7.2\\kayak.0.7.2.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\faith.olusegun\\.nuget\\packages\\microsoft.identitymodel.abstractions\\6.32.1\\microsoft.identitymodel.abstractions.6.32.1.nupkg.sha512",

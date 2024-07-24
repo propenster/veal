@@ -10,7 +10,6 @@
         .navbar-custom {
             background-color: indigo;
         }
-
             .navbar-custom .navbar-brand,
             .navbar-custom .nav-link {
                 color: white;
@@ -22,7 +21,7 @@
 
 
     <nav class="navbar navbar-expand-lg navbar-custom">
-        <a class="navbar-brand" href="#">VealFramework</a>
+        <a class="navbar-brand" href="#">VealFramework ${Name}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,11 +40,17 @@
         </div>
     </nav>
 
-
-
+  
     <div class="container mt-5">
         <h1>Veal</h1>
         <p class="lead">A lightweight, open-source, cross-platform C# .NET framework for building modern cloud-based web applications on Windows, Mac, and Linux.</p>
+
+        <ul>
+            <h4>These were dynamically passed from the action method</h4>
+            $foreach(name in listOfNames)
+            <li>$name</li>
+            $end
+        </ul>
 
         <h3>Let's get on a journey of writing our own lightweight lean web app framework for C#.</h3>
         <p>I don't know what features we'll support yet but I'll think of something.</p>

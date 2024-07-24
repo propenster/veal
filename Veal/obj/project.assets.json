@@ -19,6 +19,23 @@
           }
         }
       },
+      "JinianNet.JNTemplate/2.4.2": {
+        "type": "package",
+        "dependencies": {
+          "System.Reflection.Emit": "4.7.0",
+          "System.Reflection.Emit.Lightweight": "4.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/JinianNet.JNTemplate.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/JinianNet.JNTemplate.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Kayak/0.7.2": {
         "type": "package",
         "compile": {
@@ -350,55 +367,49 @@
           }
         }
       },
-      "System.Reflection.Emit/4.0.1-rc2-24027": {
+      "System.Reflection.Emit/4.7.0": {
         "type": "package",
         "dependencies": {
-          "System.IO": "4.1.0-rc2-24027",
-          "System.Reflection": "4.1.0-rc2-24027",
-          "System.Reflection.Emit.ILGeneration": "4.0.1-rc2-24027",
-          "System.Reflection.Primitives": "4.0.1-rc2-24027",
-          "System.Runtime": "4.1.0-rc2-24027"
+          "System.Reflection.Emit.ILGeneration": "4.7.0"
         },
         "compile": {
-          "ref/netstandard1.1/System.Reflection.Emit.dll": {
+          "ref/netstandard2.0/System.Reflection.Emit.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard1.3/System.Reflection.Emit.dll": {}
+          "lib/netstandard2.0/System.Reflection.Emit.dll": {
+            "related": ".xml"
+          }
         }
       },
-      "System.Reflection.Emit.ILGeneration/4.0.1-rc2-24027": {
+      "System.Reflection.Emit.ILGeneration/4.7.0": {
         "type": "package",
-        "dependencies": {
-          "System.Reflection": "4.1.0-rc2-24027",
-          "System.Reflection.Primitives": "4.0.1-rc2-24027",
-          "System.Runtime": "4.1.0-rc2-24027"
-        },
         "compile": {
-          "ref/netstandard1.0/System.Reflection.Emit.ILGeneration.dll": {
+          "ref/netstandard2.0/System.Reflection.Emit.ILGeneration.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard1.3/System.Reflection.Emit.ILGeneration.dll": {}
+          "lib/netstandard2.0/System.Reflection.Emit.ILGeneration.dll": {
+            "related": ".xml"
+          }
         }
       },
-      "System.Reflection.Emit.Lightweight/4.0.1-rc2-24027": {
+      "System.Reflection.Emit.Lightweight/4.7.0": {
         "type": "package",
         "dependencies": {
-          "System.Reflection": "4.1.0-rc2-24027",
-          "System.Reflection.Emit.ILGeneration": "4.0.1-rc2-24027",
-          "System.Reflection.Primitives": "4.0.1-rc2-24027",
-          "System.Runtime": "4.1.0-rc2-24027"
+          "System.Reflection.Emit.ILGeneration": "4.7.0"
         },
         "compile": {
-          "ref/netstandard1.0/System.Reflection.Emit.Lightweight.dll": {
+          "ref/netstandard2.0/System.Reflection.Emit.Lightweight.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll": {}
+          "lib/netstandard2.0/System.Reflection.Emit.Lightweight.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Reflection.Extensions/4.0.1-rc2-24027": {
@@ -698,6 +709,45 @@
         "lib/netstandard1.6/Jil.xml",
         "lib/netstandard2.0/Jil.dll",
         "lib/netstandard2.0/Jil.xml"
+      ]
+    },
+    "JinianNet.JNTemplate/2.4.2": {
+      "sha512": "FFwQz3UMCbNwe+0JqscBfMRJ72y+BbKjqQztOCuYHXXpxkukviiUMMfZL8UGKsjf0tzZG2ultFjTNi+9HPvWwg==",
+      "type": "package",
+      "path": "jiniannet.jntemplate/2.4.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "License.txt",
+        "icon.png",
+        "jiniannet.jntemplate.2.4.2.nupkg.sha512",
+        "jiniannet.jntemplate.nuspec",
+        "lib/net20/JinianNet.JNTemplate.dll",
+        "lib/net20/JinianNet.JNTemplate.xml",
+        "lib/net35/JinianNet.JNTemplate.dll",
+        "lib/net35/JinianNet.JNTemplate.xml",
+        "lib/net40/JinianNet.JNTemplate.dll",
+        "lib/net40/JinianNet.JNTemplate.xml",
+        "lib/net45/JinianNet.JNTemplate.dll",
+        "lib/net45/JinianNet.JNTemplate.xml",
+        "lib/net46/JinianNet.JNTemplate.dll",
+        "lib/net46/JinianNet.JNTemplate.xml",
+        "lib/net5.0/JinianNet.JNTemplate.dll",
+        "lib/net5.0/JinianNet.JNTemplate.xml",
+        "lib/net6.0/JinianNet.JNTemplate.dll",
+        "lib/net6.0/JinianNet.JNTemplate.xml",
+        "lib/net7.0/JinianNet.JNTemplate.dll",
+        "lib/net7.0/JinianNet.JNTemplate.xml",
+        "lib/net8.0/JinianNet.JNTemplate.dll",
+        "lib/net8.0/JinianNet.JNTemplate.xml",
+        "lib/netcoreapp2.1/JinianNet.JNTemplate.dll",
+        "lib/netcoreapp2.1/JinianNet.JNTemplate.xml",
+        "lib/netcoreapp3.1/JinianNet.JNTemplate.dll",
+        "lib/netcoreapp3.1/JinianNet.JNTemplate.xml",
+        "lib/netstandard2.0/JinianNet.JNTemplate.dll",
+        "lib/netstandard2.0/JinianNet.JNTemplate.xml",
+        "lib/netstandard2.1/JinianNet.JNTemplate.dll",
+        "lib/netstandard2.1/JinianNet.JNTemplate.xml"
       ]
     },
     "Kayak/0.7.2": {
@@ -1689,22 +1739,34 @@
         "system.reflection.nuspec"
       ]
     },
-    "System.Reflection.Emit/4.0.1-rc2-24027": {
-      "sha512": "C4kvi/Lpj5vgUtCygP0bbBnlYyuDZEU2ofdgGXa8AgV3FkmwNEqJ7zm3OhMFe/kMKRgEkJXkioFdkLHrJJLDTQ==",
+    "System.Reflection.Emit/4.7.0": {
+      "sha512": "VR4kk8XLKebQ4MZuKuIni/7oh+QGFmZW3qORd1GvBq/8026OpW501SzT/oypwiQl4TvT8ErnReh/NzY9u+C6wQ==",
       "type": "package",
-      "path": "system.reflection.emit/4.0.1-rc2-24027",
+      "path": "system.reflection.emit/4.7.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
         "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
         "lib/net45/_._",
         "lib/netcore50/System.Reflection.Emit.dll",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.1/System.Reflection.Emit.dll",
+        "lib/netstandard1.1/System.Reflection.Emit.xml",
         "lib/netstandard1.3/System.Reflection.Emit.dll",
+        "lib/netstandard2.0/System.Reflection.Emit.dll",
+        "lib/netstandard2.0/System.Reflection.Emit.xml",
+        "lib/netstandard2.1/_._",
+        "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
         "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
         "ref/net45/_._",
+        "ref/netcoreapp2.0/_._",
         "ref/netstandard1.1/System.Reflection.Emit.dll",
         "ref/netstandard1.1/System.Reflection.Emit.xml",
         "ref/netstandard1.1/de/System.Reflection.Emit.xml",
@@ -1716,26 +1778,51 @@
         "ref/netstandard1.1/ru/System.Reflection.Emit.xml",
         "ref/netstandard1.1/zh-hans/System.Reflection.Emit.xml",
         "ref/netstandard1.1/zh-hant/System.Reflection.Emit.xml",
+        "ref/netstandard2.0/System.Reflection.Emit.dll",
+        "ref/netstandard2.0/System.Reflection.Emit.xml",
+        "ref/netstandard2.1/_._",
+        "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
-        "system.reflection.emit.4.0.1-rc2-24027.nupkg.sha512",
-        "system.reflection.emit.nuspec"
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/aot/lib/netcore50/System.Reflection.Emit.dll",
+        "runtimes/aot/lib/netcore50/System.Reflection.Emit.xml",
+        "system.reflection.emit.4.7.0.nupkg.sha512",
+        "system.reflection.emit.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
-    "System.Reflection.Emit.ILGeneration/4.0.1-rc2-24027": {
-      "sha512": "s7puteOinRV3+sGWDLeuUbSSxwZHqHhXpLwoTlS4L0x7d58j868LbKPSPJVZAs6a/dGkyo02WHVDcEtCBjn8VQ==",
+    "System.Reflection.Emit.ILGeneration/4.7.0": {
+      "sha512": "AucBYo3DSI0IDxdUjKksBcQJXPHyoPyrCXYURW1WDsLI4M65Ar/goSHjdnHOAY9MiYDNKqDlIgaYm+zL2hA1KA==",
       "type": "package",
-      "path": "system.reflection.emit.ilgeneration/4.0.1-rc2-24027",
+      "path": "system.reflection.emit.ilgeneration/4.7.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
         "lib/net45/_._",
         "lib/netcore50/System.Reflection.Emit.ILGeneration.dll",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.Reflection.Emit.ILGeneration.dll",
+        "lib/netstandard1.0/System.Reflection.Emit.ILGeneration.xml",
         "lib/netstandard1.3/System.Reflection.Emit.ILGeneration.dll",
+        "lib/netstandard2.0/System.Reflection.Emit.ILGeneration.dll",
+        "lib/netstandard2.0/System.Reflection.Emit.ILGeneration.xml",
+        "lib/netstandard2.1/_._",
         "lib/portable-net45+wp8/_._",
         "lib/wp80/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
         "ref/net45/_._",
+        "ref/netcoreapp2.0/_._",
         "ref/netstandard1.0/System.Reflection.Emit.ILGeneration.dll",
         "ref/netstandard1.0/System.Reflection.Emit.ILGeneration.xml",
         "ref/netstandard1.0/de/System.Reflection.Emit.ILGeneration.xml",
@@ -1747,28 +1834,53 @@
         "ref/netstandard1.0/ru/System.Reflection.Emit.ILGeneration.xml",
         "ref/netstandard1.0/zh-hans/System.Reflection.Emit.ILGeneration.xml",
         "ref/netstandard1.0/zh-hant/System.Reflection.Emit.ILGeneration.xml",
+        "ref/netstandard2.0/System.Reflection.Emit.ILGeneration.dll",
+        "ref/netstandard2.0/System.Reflection.Emit.ILGeneration.xml",
+        "ref/netstandard2.1/_._",
         "ref/portable-net45+wp8/_._",
         "ref/wp80/_._",
-        "runtimes/aot/lib/netcore50/_._",
-        "system.reflection.emit.ilgeneration.4.0.1-rc2-24027.nupkg.sha512",
-        "system.reflection.emit.ilgeneration.nuspec"
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/aot/lib/netcore50/System.Reflection.Emit.ILGeneration.dll",
+        "runtimes/aot/lib/netcore50/System.Reflection.Emit.ILGeneration.xml",
+        "system.reflection.emit.ilgeneration.4.7.0.nupkg.sha512",
+        "system.reflection.emit.ilgeneration.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
-    "System.Reflection.Emit.Lightweight/4.0.1-rc2-24027": {
-      "sha512": "kDuurD3Z1bYJrW0VqBEoHWLUCWYtto/SF/dajEj8sXftap3zkqBF+3IMb8l4EfRuzytlS2TlmFxiApbB9C8JEA==",
+    "System.Reflection.Emit.Lightweight/4.7.0": {
+      "sha512": "a4OLB4IITxAXJeV74MDx49Oq2+PsF6Sml54XAFv+2RyWwtDBcabzoxiiJRhdhx+gaohLh4hEGCLQyBozXoQPqA==",
       "type": "package",
-      "path": "system.reflection.emit.lightweight/4.0.1-rc2-24027",
+      "path": "system.reflection.emit.lightweight/4.7.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
         "lib/net45/_._",
         "lib/netcore50/System.Reflection.Emit.Lightweight.dll",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.Reflection.Emit.Lightweight.dll",
+        "lib/netstandard1.0/System.Reflection.Emit.Lightweight.xml",
         "lib/netstandard1.3/System.Reflection.Emit.Lightweight.dll",
+        "lib/netstandard2.0/System.Reflection.Emit.Lightweight.dll",
+        "lib/netstandard2.0/System.Reflection.Emit.Lightweight.xml",
+        "lib/netstandard2.1/_._",
         "lib/portable-net45+wp8/_._",
         "lib/wp80/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
         "ref/net45/_._",
+        "ref/netcoreapp2.0/_._",
         "ref/netstandard1.0/System.Reflection.Emit.Lightweight.dll",
         "ref/netstandard1.0/System.Reflection.Emit.Lightweight.xml",
         "ref/netstandard1.0/de/System.Reflection.Emit.Lightweight.xml",
@@ -1780,11 +1892,21 @@
         "ref/netstandard1.0/ru/System.Reflection.Emit.Lightweight.xml",
         "ref/netstandard1.0/zh-hans/System.Reflection.Emit.Lightweight.xml",
         "ref/netstandard1.0/zh-hant/System.Reflection.Emit.Lightweight.xml",
+        "ref/netstandard2.0/System.Reflection.Emit.Lightweight.dll",
+        "ref/netstandard2.0/System.Reflection.Emit.Lightweight.xml",
+        "ref/netstandard2.1/_._",
         "ref/portable-net45+wp8/_._",
         "ref/wp80/_._",
-        "runtimes/aot/lib/netcore50/_._",
-        "system.reflection.emit.lightweight.4.0.1-rc2-24027.nupkg.sha512",
-        "system.reflection.emit.lightweight.nuspec"
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "runtimes/aot/lib/netcore50/System.Reflection.Emit.Lightweight.dll",
+        "runtimes/aot/lib/netcore50/System.Reflection.Emit.Lightweight.xml",
+        "system.reflection.emit.lightweight.4.7.0.nupkg.sha512",
+        "system.reflection.emit.lightweight.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.Reflection.Extensions/4.0.1-rc2-24027": {
@@ -2811,6 +2933,7 @@
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
       "Jil >= 2.17.0",
+      "JinianNet.JNTemplate >= 2.4.2",
       "Kayak >= 0.7.2",
       "Microsoft.IdentityModel.Tokens >= 6.32.1",
       "NETStandard.Library >= 2.0.3",
@@ -2871,6 +2994,10 @@
           "Jil": {
             "target": "Package",
             "version": "[2.17.0, )"
+          },
+          "JinianNet.JNTemplate": {
+            "target": "Package",
+            "version": "[2.4.2, )"
           },
           "Kayak": {
             "target": "Package",
