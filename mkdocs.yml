@@ -1,0 +1,6 @@
+site_name: Veal Framework
+repo_url: https://github.com/propenster/veal
+theme:
+  name: readthedocs
+nav:
+  - Home: index.md
